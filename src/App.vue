@@ -17,7 +17,40 @@
         <div class="container search-container">
           <input type="text" placeholder="Search books (Ctrl+P)..." class="search-input" @focus="searchFocused = true"
             @blur="searchFocused = false" v-model="searchQuery" ref="searchInput" />
-          <!-- <span class="search-shortcut" v-if="!searchFocused">Ctrl+P</span> -->
+          <template><span class="search-shortcut" v-if="!searchFocused">Ctrl+P</span></template>
+        </div>
+      </section>
+
+      <section class="search-results" v-if="searchQuery.trim()">
+        <div class="container">
+          <h2 class="search-results-heading">Search Results</h2>
+
+          <div v-if="isSearching" class="loading-results">
+            <p>Searching...</p>
+          </div>
+
+          <div v-else-if="searchResults.length === 0" class="no-results">
+            <p>No books found matching "{{ searchQuery }}"</p>
+          </div>
+
+          <div v-else class="results-grid">
+            <div v-for="book in searchResults" :key="book.id" class="book-card">
+              <div class="book-cover" :style="getBookCoverStyle(book)"></div>
+              <div class="book-info">
+                <h3 class="book-title">{{ book.title }}</h3>
+                <p class="book-author">by {{ book.author }}</p>
+                <div class="book-meta">
+                  <span v-if="book.genre" class="book-genre">{{ book.genre }}</span>
+                  <span class="book-status" :class="book.status">
+                    {{ getStatusText(book.status) }}
+                  </span>
+                </div>
+                <p v-if="book.description" class="book-description">
+                  {{ truncateText(book.description, 100) }}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -94,37 +127,37 @@
 </template>
 
 <script>
+import bookService from '@/services/bookService';
+
 export default {
   name: 'App',
   data() {
     return {
       searchQuery: '',
       searchFocused: false,
-      featuredBooks: [
-        {
-          id: 1,
-          title: 'The Great Gatsby',
-          author: 'F. Scott Fitzgerald',
-          category: 'Classic',
-          color: '#2c3e50',
-        },
-        {
-          id: 2,
-          title: 'To Kill a Mockingbird',
-          author: 'Harper Lee',
-          category: 'Fiction',
-          color: '#34495e',
-        },
-        {
-          id: 3,
-          title: '1984',
-          author: 'George Orwell',
-          category: 'Dystopian',
-          color: '#7f8c8d',
-        },
-      ],
+      searchResults: [],
+      isSearching: false,
+      searchTimeout: null,
     };
   },
+
+  watch: {
+    searchQuery(newValue) {
+      // Debounce search to avoid too many requests
+      clearTimeout(this.searchTimeout);
+
+      if (newValue.trim()) {
+        this.isSearching = true;
+        this.searchTimeout = setTimeout(() => {
+          this.performSearch();
+        }, 300); // Delay by 300ms
+      } else {
+        this.searchResults = [];
+        this.isSearching = false;
+      }
+    }
+  },
+
   mounted() {
     // Add keyboard shortcut for search
     window.addEventListener('keydown', (event) => {
@@ -134,6 +167,57 @@ export default {
       }
     });
   },
+
+  methods: {
+    async performSearch() {
+      try {
+        this.searchResults = await bookService.searchBooks(this.searchQuery);
+      } catch (error) {
+        console.error('Search error:', error);
+        this.searchResults = [];
+      } finally {
+        this.isSearching = false;
+      }
+    },
+
+    getStatusText(status) {
+      const statusMap = {
+        'available': 'Available',
+        'checked_out': 'Checked Out',
+        'reserved': 'Reserved'
+      };
+      return statusMap[status] || 'Unknown';
+    },
+
+    truncateText(text, maxLength) {
+      if (!text) return '';
+      return text.length > maxLength
+        ? text.substring(0, maxLength) + '...'
+        : text;
+    },
+
+    getBookCoverStyle(book) {
+      if (book.coverImage) {
+        return {
+          backgroundImage: `url(${book.coverImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        };
+      }
+
+      // Generate a color based on the book title for books without covers
+      const colors = [
+        '#3498db', '#2ecc71', '#e74c3c', '#f39c12',
+        '#9b59b6', '#1abc9c', '#d35400', '#34495e'
+      ];
+
+      const index = book.title
+        ? book.title.length % colors.length
+        : Math.floor(Math.random() * colors.length);
+
+      return { backgroundColor: colors[index] };
+    }
+  }
 };
 </script>
 
@@ -245,7 +329,7 @@ body {
   background-color: var(--accent-color);
   color: var(--bg-secondary);
 
-  padding: 8px 15px;
+  padding: 0.8rem 1.5rem;
 
   border: none;
   border-radius: 4px;
@@ -302,6 +386,127 @@ section {
   font-size: 0.8rem;
 } */
 
+/* Search Results */
+.search-results {
+  padding: 3rem 0;
+}
+
+.search-results-heading {
+  text-align: center;
+  margin: 3rem 0;
+}
+
+.loading-results,
+.no-results {
+  padding: 2rem;
+  text-align: center;
+  color: #aaa;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.book-card {
+  background-color: #2c2c2c;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+}
+
+.book-cover {
+  height: 150px;
+  background-color: #3498db;
+}
+
+.book-info {
+  padding: 1.5rem;
+}
+
+.book-title {
+  color: #fff;
+}
+
+.book-author {
+  color: #bbb;
+  font-style: italic;
+}
+
+.book-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.book-genre {
+  background-color: #444;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #ddd;
+}
+
+.book-status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.book-status.available {
+  background-color: #2ecc71;
+  color: #fff;
+}
+
+.book-status.checked_out,
+.book-status.reserved {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.book-description {
+  color: #bbb;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Media queries for responsive layout */
+@media (min-width: 640px) {
+  .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .results-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .book-card {
+    flex-direction: row;
+    height: 18rem;
+  }
+
+  .book-cover {
+    width: 12rem;
+    height: 100%;
+  }
+
+  .book-info {
+    flex: 1;
+  }
+}
+
+/* Hero */
 .hero {
   text-align: center;
 }
