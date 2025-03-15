@@ -1,0 +1,67 @@
+{
+  "books": [
+    {
+      "id": "1",
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "isbn": "9780743273565",
+      "coverImage": "https://covers.openlibrary.org/b/isbn/9780743273565-L.jpg",
+      "description": "A story of decadence and excess, Gatsby explores the American Dream in the 1920s.",
+      "publishYear": 1925,
+      "genre": "Literary Fiction",
+      "categories": [
+        "Classic",
+        "American Literature"
+      ],
+      "rating": 4.5,
+      "status": "available",
+      "copies": 3,
+      "condition": "good",
+      "location": "Library Room 101",
+      "donor": "Smith Family Foundation",
+      "dateAdded": "2023-01-15"
+    },
+    {
+      "id": "2",
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "isbn": "9780446310789",
+      "coverImage": "https://covers.openlibrary.org/b/isbn/9780446310789-L.jpg",
+      "description": "A compelling story of racial injustice and childhood innocence in the American South.",
+      "publishYear": 1960,
+      "genre": "Classic",
+      "categories": [
+        "Literature",
+        "Social Justice"
+      ],
+      "rating": 4.8,
+      "status": "checked_out",
+      "copies": 4,
+      "condition": "fair",
+      "location": "English Department",
+      "donor": "Local Library",
+      "dateAdded": "2023-02-20"
+    },
+    {
+      "id": "3",
+      "title": "1984",
+      "author": "George Orwell",
+      "isbn": "9780451524935",
+      "coverImage": "https://covers.openlibrary.org/b/isbn/9780451524935-L.jpg",
+      "description": "A dystopian novel about surveillance, control, and the dangers of totalitarianism.",
+      "publishYear": 1949,
+      "genre": "Science Fiction",
+      "categories": [
+        "Dystopian",
+        "Political Fiction"
+      ],
+      "rating": 4.7,
+      "status": "reserved",
+      "copies": 2,
+      "condition": "new",
+      "location": "Room 204",
+      "donor": "Book Drive 2023",
+      "dateAdded": "2023-03-10"
+    }
+  ]
+}
