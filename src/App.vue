@@ -1,8 +1,10 @@
 <template>
   <div id="app" class="dark-mode">
-    <header>
-      <img alt="BookBuddy logo" src="./assets/logo.png" class="logo">
-      <h1>BookBuddy</h1>
+    <header class="header">
+      <div class="header-info">
+        <img alt="BookBuddy logo" src="./assets/logo.png" class="logo">
+        <h1 class="header-heading">BookBuddy</h1>
+      </div>
 
       <div class="user-account">
         <span class="user-name">Guest</span>
@@ -12,74 +14,78 @@
 
     <main>
       <section class="search">
-        <div class="search-container">
+        <div class="container search-container">
           <input type="text" placeholder="Search books (Ctrl+P)..." class="search-input" @focus="searchFocused = true"
             @blur="searchFocused = false" v-model="searchQuery" ref="searchInput">
-          <span class="search-shortcut" v-if="!searchFocused">Ctrl+P</span>
+          <!-- <span class="search-shortcut" v-if="!searchFocused">Ctrl+P</span> -->
         </div>
       </section>
 
-      <section class="welcome-section">
-        <h2>Welcome to BookBuddy</h2>
-        <p class="tagline">Connecting book donors and seekers</p>
+      <section class="hero">
+        <div class="container">
+          <h2 class="hero-heading">Welcome to BookBuddy</h2>
+          <p class="tagline">Connecting book donors and seekers</p>
 
-        <div class="cta-buttons">
-          <button class="cta-button donate">Donate Books</button>
-          <button class="cta-button find">Find Books</button>
+          <div class="cta-buttons">
+            <button class="cta-button donate">Donate Books</button>
+            <button class="cta-button find">Find Books</button>
+          </div>
         </div>
       </section>
 
       <section class="intro">
-        <h2>How it works</h2>
-        <div class="features">
-          <div class="feature">
-            <h3>List Your Books</h3>
-            <p>Share books you no longer need</p>
-          </div>
-          <div class="feature">
-            <h3>Find Books</h3>
-            <p>Browse available books near you</p>
-          </div>
-          <div class="feature">
-            <h3>Connect</h3>
-            <p>Message donors and arrange pickup</p>
+        <div class="container">
+          <h2 class="feature-heading">How it works</h2>
+          <div class="features">
+            <div class="feature">
+              <h3>List Your Books</h3>
+              <p>Share books you no longer need</p>
+            </div>
+            <div class="feature">
+              <h3>Find Books</h3>
+              <p>Browse available books near you</p>
+            </div>
+            <div class="feature">
+              <h3>Connect</h3>
+              <p>Message donors and arrange pickup</p>
+            </div>
           </div>
         </div>
       </section>
 
       <section class="featured-books">
-        <h2>Featured Books</h2>
-        <div class="books-grid">
-          <!-- Book cards would go here -->
-          <div class="book-card" v-for="book in featuredBooks" :key="book.id">
-            <div class="book-cover" :style="{ backgroundColor: book.color }">
-              <h3>{{ book.title }}</h3>
-            </div>
-            <div class="book-info">
-              <p class="book-author">{{ book.author }}</p>
-              <p class="book-category">{{ book.category }}</p>
+        <div class="container">
+          <h2 class="featured-heading">Featured Books</h2>
+          <div class="books-grid">
+            <!-- Book cards would go here -->
+            <div class="book-card" v-for="book in featuredBooks" :key="book.id">
+              <div class="book-cover" :style="{ backgroundColor: book.color }">
+                <h3>{{ book.title }}</h3>
+              </div>
+              <div class="book-info">
+                <p class="book-author">{{ book.author }}</p>
+                <p class="book-category">{{ book.category }}</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
     </main>
 
-    <footer>
+    <footer class="footer">
       <div class="footer-left">
         <img alt="BookBuddy logo" src="./assets/logo.png" class="footer-logo">
         <span class="footer-name">BookBuddy</span>
       </div>
 
-      <div class="footer-center">
-        <div class="social-links">
-          <a href="#" class="social-link">Twitter/X</a>
-          <a href="#" class="social-link">Instagram</a>
-        </div>
+      <div class="footer-right">
+        <a href="#" class="social-link ta-right">Instagram</a>
+        <a href="https://github.com/MaadhavBhatt/bookbuddy" class="social-link ta-left" target="_blank">GitHub</a>
       </div>
 
       <div class="footer-right">
-        <p>&copy; 2025 BookBuddy - MIT License</p>
-        <p>Made with ❤️ for book lovers</p>
+        <p class="ta-right">&copy; 2025 BookBuddy - MIT License</p>
+        <p class="ta-left">Made with ❤️ for book lovers</p>
       </div>
     </footer>
   </div>
@@ -152,6 +158,20 @@ body {
   padding: 0;
 }
 
+/* Utility CLasses */
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.ta-left {
+  text-align: left;
+}
+
+.ta-right {
+  text-align: right;
+}
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -162,14 +182,24 @@ body {
 }
 
 /* Header */
-header {
+.header {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
+
+  position: relative;
   padding: 3rem;
+
   background-color: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .logo {
@@ -177,43 +207,10 @@ header {
   height: 4rem;
 }
 
-h1 {
-  color: var(--accent-color);
+.header-heading {
   font-size: 1.5em;
-}
-
-.search {
-  padding: 3rem 0;
-}
-
-.search-container {
-  position: relative;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.search-input {
-  width: 100%;
-  padding: 1rem 1.5rem;
-  border-radius: 20px;
-  background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.5rem;
-}
-
-.search-shortcut {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: var(--bg-tertiary);
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: var(--text-secondary);
-  font-size: 0.8rem;
+  text-align: center;
+  color: var(--accent-color);
 }
 
 .user-account {
@@ -223,27 +220,71 @@ h1 {
 }
 
 .login-button {
+  cursor: pointer;
+  
   background-color: var(--accent-color);
-  color: white;
+  color: var(--bg-secondary);
+  
   padding: 8px 15px;
+  
   border: none;
   border-radius: 4px;
-  cursor: pointer;
+  
+  transition: all 0.2s ease;
 }
 
 .login-button:hover {
   background-color: var(--accent-hover);
+  box-shadow: 0 5px 0 hsla(0, 83%, 37%, 0.212);
+  transform: translateY(-2px);
+  transition: transform 0.3s,
+              box-shadow 0.3s;
 }
 
 /* Main content */
 main {
   flex: 1;
-  padding: 2rem;
 }
 
-.welcome-section {
+section {
+  padding: 2rem 0;
+}
+
+/* Search */
+.search-container {
+  position: relative;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.search-input {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+
+  width: 100%;
+  padding: 1rem 1.5rem;
+  
+  border: 1px solid var(--border-color);
+  border-radius: 2rem;
+}
+
+/* .search-shortcut {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--bg-tertiary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+} */
+
+.hero {
   text-align: center;
-  margin-bottom: 4rem;
 }
 
 .tagline {
@@ -286,42 +327,39 @@ main {
   border: 2px solid var(--accent-color);
 }
 
-.intro {
-  margin-top: 40px;
+h2 {
+  font-size: 1.5rem;
+  text-align: center;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
+.feature-heading {
+  padding: 1rem 2rem;
+  /* text-align: right; */
 }
 
 .features {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-top: 30px;
+  gap: 2rem;
 }
 
 .feature {
   background-color: var(--bg-secondary);
-  padding: 20px;
+  padding: 1rem 2rem;
   border-radius: 8px;
+  text-align: center;
 }
 
 h3 {
   color: var(--accent-color);
-  margin-bottom: 10px;
-}
-
-.featured-books {
-  margin-top: 40px;
+  margin-bottom: 1rem;
 }
 
 .books-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
-  margin-top: 20px;
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
 .book-card {
@@ -336,16 +374,18 @@ h3 {
 }
 
 .book-cover {
-  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  
   color: white;
+  
+  min-height: 15rem;
+  padding: 2rem;
 }
 
 .book-info {
-  padding: 15px;
+  padding: 1.5rem;
 }
 
 .book-author {
@@ -359,11 +399,12 @@ h3 {
 }
 
 /* Footer */
-footer {
+.footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  gap: 1rem;
+  padding: 2rem;
   background-color: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
 }
@@ -374,7 +415,7 @@ footer {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 15px;
+  gap: 1.5rem;
 }
 
 .footer-left {
@@ -385,7 +426,7 @@ footer {
 .footer-logo {
   width: 3rem;
   height: 3rem;
-  margin-right: 10px;
+  margin-right: 1rem;
 }
 
 .footer-name {
@@ -393,14 +434,15 @@ footer {
   color: var(--accent-color);
 }
 
-.social-links {
+.footer-center {
   display: flex;
-  gap: 20px;
+  gap: 2rem;
 }
 
 .social-link {
   color: var(--text-secondary);
   text-decoration: none;
+  width: 100%;
 }
 
 .social-link:hover {
@@ -415,21 +457,15 @@ footer {
 
 /* Media queries for responsive design */
 @media (min-width: 768px) {
-  header {
+  .header {
     flex-direction: row;
     justify-content: space-between;
-    padding: 15px 30px;
-  }
-
-  .header-left,
-  .header-right {
-    width: auto;
-    margin-bottom: 0;
+    padding: 1.5rem 3rem;
   }
 
   .search {
     flex: 1;
-    margin: 0 20px;
+    margin: 0 2rem;
   }
 
   .cta-buttons {
@@ -446,10 +482,10 @@ footer {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  footer {
+  .footer {
     flex-direction: row;
     justify-content: space-between;
-    padding: 20px 30px;
+    padding: 2rem 3rem;
   }
 
   .footer-left,
