@@ -2,7 +2,7 @@
   <div id="app" class="dark-mode">
     <header class="header">
       <div class="header-info">
-        <img alt="BookBuddy logo" src="./assets/logo.png" class="logo">
+        <img alt="BookBuddy logo" src="./assets/logo.png" class="logo" />
         <h1 class="header-heading">BookBuddy</h1>
       </div>
 
@@ -16,7 +16,7 @@
       <section class="search">
         <div class="container search-container">
           <input type="text" placeholder="Search books (Ctrl+P)..." class="search-input" @focus="searchFocused = true"
-            @blur="searchFocused = false" v-model="searchQuery" ref="searchInput">
+            @blur="searchFocused = false" v-model="searchQuery" ref="searchInput" />
           <!-- <span class="search-shortcut" v-if="!searchFocused">Ctrl+P</span> -->
         </div>
       </section>
@@ -73,19 +73,21 @@
     </main>
 
     <footer class="footer">
-      <div class="footer-left">
-        <img alt="BookBuddy logo" src="./assets/logo.png" class="footer-logo">
-        <span class="footer-name">BookBuddy</span>
-      </div>
+      <div class="container">
+        <div class="footer-left">
+          <img alt="BookBuddy logo" src="./assets/logo.png" class="footer-logo" />
+          <span class="footer-name">BookBuddy</span>
+        </div>
 
-      <div class="footer-right">
-        <a href="#" class="social-link ta-right">Instagram</a>
-        <a href="https://github.com/MaadhavBhatt/bookbuddy" class="social-link ta-left" target="_blank">GitHub</a>
-      </div>
+        <div class="footer-right">
+          <a href="#" class="social-link ta-right">Instagram</a>
+          <a href="https://github.com/MaadhavBhatt/bookbuddy" class="social-link ta-left" target="_blank">GitHub</a>
+        </div>
 
-      <div class="footer-right">
-        <p class="ta-right">&copy; 2025 BookBuddy - MIT License</p>
-        <p class="ta-left">Made with ❤️ for book lovers</p>
+        <div class="footer-right">
+          <p class="ta-right">&copy; 2025 BookBuddy - MIT License</p>
+          <p class="ta-left">Made with ❤️ for book lovers</p>
+        </div>
       </div>
     </footer>
   </div>
@@ -99,11 +101,29 @@ export default {
       searchQuery: '',
       searchFocused: false,
       featuredBooks: [
-        { id: 1, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', category: 'Classic', color: '#2c3e50' },
-        { id: 2, title: 'To Kill a Mockingbird', author: 'Harper Lee', category: 'Fiction', color: '#34495e' },
-        { id: 3, title: '1984', author: 'George Orwell', category: 'Dystopian', color: '#7f8c8d' }
-      ]
-    }
+        {
+          id: 1,
+          title: 'The Great Gatsby',
+          author: 'F. Scott Fitzgerald',
+          category: 'Classic',
+          color: '#2c3e50',
+        },
+        {
+          id: 2,
+          title: 'To Kill a Mockingbird',
+          author: 'Harper Lee',
+          category: 'Fiction',
+          color: '#34495e',
+        },
+        {
+          id: 3,
+          title: '1984',
+          author: 'George Orwell',
+          category: 'Dystopian',
+          color: '#7f8c8d',
+        },
+      ],
+    };
   },
   mounted() {
     // Add keyboard shortcut for search
@@ -113,8 +133,8 @@ export default {
         this.$refs.searchInput.focus();
       }
     });
-  }
-}
+  },
+};
 </script>
 
 <style>
@@ -136,9 +156,9 @@ Color Scheme:
   --bg-tertiary: #2a2a2a;
   --text-primary: #e0e0e0;
   --text-secondary: #b0b0b0;
-  --accent-color: #B0FFA1;
-  --accent-hover: #E4B304;
-  --accent-blue: #F121EB;
+  --accent-color: #b0ffa1;
+  --accent-hover: #e4b304;
+  --accent-blue: #f121eb;
   --border-color: #333;
 }
 
@@ -146,7 +166,7 @@ Color Scheme:
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  
+
   font-family: 'Monstserrat', sans-serif;
   font-size: 10px;
 }
@@ -221,15 +241,15 @@ body {
 
 .login-button {
   cursor: pointer;
-  
+
   background-color: var(--accent-color);
   color: var(--bg-secondary);
-  
+
   padding: 8px 15px;
-  
+
   border: none;
   border-radius: 4px;
-  
+
   transition: all 0.2s ease;
 }
 
@@ -237,8 +257,7 @@ body {
   background-color: var(--accent-hover);
   box-shadow: 0 5px 0 hsla(0, 83%, 37%, 0.212);
   transform: translateY(-2px);
-  transition: transform 0.3s,
-              box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 /* Main content */
@@ -260,13 +279,13 @@ section {
 .search-input {
   font-family: 'Montserrat', sans-serif;
   font-size: clamp(1rem, 5vw, 1.5rem);
-  
+
   color: var(--text-primary);
   background-color: var(--bg-tertiary);
 
   width: 100%;
   padding: 1rem 1.5rem;
-  
+
   border: 1px solid var(--border-color);
   border-radius: 2rem;
 }
@@ -305,13 +324,13 @@ section {
 
 .cta-button {
   cursor: pointer;
-  
+
   font-size: 1rem;
   font-weight: bold;
-  
+
   /* max-width: 15rem; */
   padding: 12px 20px;
-  
+
   border: none;
   border-radius: 6px;
 }
@@ -344,6 +363,8 @@ h2 {
 }
 
 .feature {
+  flex-grow: 1;
+  flex-basis: 0;
   background-color: var(--bg-secondary);
   padding: 1rem 2rem;
   border-radius: 8px;
@@ -377,9 +398,9 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   color: white;
-  
+
   min-height: 15rem;
   padding: 2rem;
 }
