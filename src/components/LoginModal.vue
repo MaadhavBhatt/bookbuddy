@@ -146,6 +146,11 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+}
+
 .login-modal {
   position: fixed;
   top: 0;

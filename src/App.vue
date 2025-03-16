@@ -416,9 +416,19 @@ body {
   padding: 0;
 }
 
+#app {
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
 /* Utility CLasses */
 .container {
-  width: 80%;
+  width: min(80%, 100rem);
+  /* max-width: 100rem; */
   margin: 0 auto;
 }
 
@@ -430,14 +440,6 @@ body {
   text-align: right;
 }
 
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  max-width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 
 /* Login Modal */
 .user-info {
@@ -466,6 +468,7 @@ body {
   color: white;
 }
 
+
 /* Header */
 .header {
   display: flex;
@@ -475,7 +478,10 @@ body {
   gap: 1.5rem;
 
   position: relative;
-  padding: 3rem;
+  padding: 3rem 0;
+  width: min(80%, 100rem);
+  margin: 0 auto;
+
 
   background-color: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
@@ -526,6 +532,7 @@ body {
   transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
 }
 
+
 /* Main content */
 main {
   flex: 1;
@@ -538,7 +545,7 @@ section {
 /* Search */
 .search-container {
   position: relative;
-  max-width: 400px;
+  max-width: 40rem;
   margin: 0 auto;
 }
 
@@ -567,6 +574,7 @@ section {
   color: var(--text-secondary);
   font-size: 0.8rem;
 } */
+
 
 /* Upload */
 .upload-actions {
@@ -683,32 +691,6 @@ section {
   line-height: 1.4;
 }
 
-/* Media queries for responsive layout */
-@media (min-width: 640px) {
-  .results-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .results-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .book-card {
-    flex-direction: row;
-    height: 18rem;
-  }
-
-  .book-cover {
-    width: 12rem;
-    height: 100%;
-  }
-
-  .book-info {
-    flex: 1;
-  }
-}
 
 /* Hero */
 .hero {
@@ -727,7 +709,7 @@ section {
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  max-width: 30;
+
   margin: 0 auto;
 }
 
@@ -737,7 +719,6 @@ section {
   font-size: 1rem;
   font-weight: bold;
 
-  /* max-width: 15rem; */
   padding: 12px 20px;
 
   border: none;
@@ -761,21 +742,24 @@ h2 {
 }
 
 .feature-heading {
-  padding: 1rem 2rem;
-  /* text-align: right; */
+  padding: 1rem;
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .features {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  margin: 0 auto;
+  max-width: fit-content;
 }
 
 .feature {
   flex-grow: 1;
   flex-basis: 0;
   background-color: var(--bg-secondary);
-  padding: 1rem 2rem;
+  padding: 1rem;
   border-radius: 8px;
   text-align: center;
 }
@@ -828,13 +812,14 @@ h3 {
   color: var(--text-secondary);
 }
 
+
 /* Footer */
 .footer {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  padding: 2rem;
+  padding: 2rem 0;
   background-color: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
 }
@@ -885,31 +870,28 @@ h3 {
   font-size: 0.9rem;
 }
 
-/* Media queries for responsive design */
-@media (min-width: 768px) {
+
+/* Media queries */
+@media (min-width: 375px) {
   .header {
     flex-direction: row;
     justify-content: space-between;
-    padding: 1.5rem 3rem;
-  }
-
-  .search {
-    flex: 1;
-    margin: 0 2rem;
   }
 
   .cta-buttons {
     flex-direction: row;
-    max-width: 400px;
   }
 
+  .books-grid,
+  .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
   .features {
     flex-direction: row;
     justify-content: space-around;
-  }
-
-  .books-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .footer {
@@ -931,13 +913,24 @@ h3 {
 }
 
 @media (min-width: 992px) {
-  #app {
-    max-width: 1200px;
-    margin: 0 auto;
+
+  .books-grid,
+  .results-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  .books-grid {
-    grid-template-columns: repeat(3, 1fr);
+  .book-card {
+    flex-direction: row;
+    /* height: 18rem; */
+  }
+
+  .book-cover {
+    width: 12rem;
+    /* height: 100%; */
+  }
+
+  .book-info {
+    flex: 1;
   }
 }
 </style>
