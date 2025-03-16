@@ -18,8 +18,22 @@
       "copies": 3,
       "condition": "good",
       "location": "Library Room 101",
-      "donor": "Smith Family Foundation",
-      "dateAdded": "2023-01-15"
+      "donors": [
+        {
+          "name": "Smith Family Foundation",
+          "email": "info@smithfoundation.org",
+          "date": "2023-01-10",
+          "copies": 2,
+          "notes": "Original hardcover editions donated"
+        },
+        {
+          "name": "Local Book Club",
+          "email": "bookclub@email.com",
+          "date": "2023-01-12",
+          "copies": 1,
+          "notes": "Paperback edition donated"
+        }
+      ]
     },
     {
       "id": "2",
@@ -39,8 +53,15 @@
       "copies": 4,
       "condition": "fair",
       "location": "English Department",
-      "donor": "Local Library",
-      "dateAdded": "2023-02-20"
+      "donors": [
+        {
+          "name": "Local Library",
+          "email": "library@email.com",
+          "date": "2023-02-15",
+          "copies": 4,
+          "notes": "Annual book donation"
+        }
+      ]
     },
     {
       "id": "3",
@@ -60,8 +81,15 @@
       "copies": 2,
       "condition": "new",
       "location": "Room 204",
-      "donor": "Book Drive 2023",
-      "dateAdded": "2023-03-10"
+      "donors": [
+        {
+          "name": "Book Drive 2023",
+          "email": "bookdrive@example.com",
+          "date": "2023-03-01",
+          "copies": 2,
+          "notes": "Annual book drive donation"
+        }
+      ]
     }
   ]
 }
