@@ -11,6 +11,6 @@ const firebaseConfig = {
 };
 
 // Check whether Firebase or local storage should be used
-const useFirebase = process.env.VUE_APP_USE_FIREBASE === 'true';
+const useFirebase = process.env.VUE_APP_USE_FIREBASE !== 'false';
 
 export { firebaseConfig, useFirebase };

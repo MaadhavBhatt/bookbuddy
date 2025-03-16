@@ -1,10 +1,13 @@
+// src/firebase/index.js
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 import { firebaseConfig, useFirebase } from './config';
 import { getFallbackDb } from './fallback';
 import * as firestore from 'firebase/firestore';
 
 let db;
+let auth = null;
 let firestoreLib;
 
 // Check if we're using real Firebase or local fallback
@@ -16,6 +19,7 @@ if (
   try {
     const app = initializeApp(firebaseConfig);
     db = getFirestore(app);
+    auth = getAuth(app);
     firestoreLib = firestore;
     console.log('Firebase initialized successfully');
   } catch (error) {
@@ -30,5 +34,5 @@ if (
   firestoreLib = require('./mockFirestore');
 }
 
-// Export the database and Firestore functions
-export { db, firestoreLib };
+// Export the database, auth and Firestore functions
+export { db, auth, firestoreLib };

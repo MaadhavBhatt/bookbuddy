@@ -1,5 +1,7 @@
 <template>
   <div id="app" class="dark-mode">
+    <login-modal :show="showLoginModal" @close="showLoginModal = false" @auth-success="handleAuthSuccess" />
+
     <header class="header">
       <div class="header-info">
         <img alt="BookBuddy logo" src="./assets/logo.png" class="logo" />
@@ -7,8 +9,11 @@
       </div>
 
       <div class="user-account">
-        <span class="user-name">Guest</span>
-        <button class="login-button">Login</button>
+        <div v-if="currentUser" class="user-info">
+          <span class="user-name">{{ getUserDisplayName }}</span>
+          <button class="logout-button" @click="logout">Logout</button>
+        </div>
+        <button v-else class="login-button" @click="showLoginModal = true">Login</button>
       </div>
     </header>
 
@@ -18,6 +23,12 @@
           <input type="text" placeholder="Search books (Ctrl+P)..." class="search-input" @focus="searchFocused = true"
             @blur="searchFocused = false" v-model="searchQuery" ref="searchInput" />
           <template><span class="search-shortcut" v-if="!searchFocused">Ctrl+P</span></template>
+        </div>
+
+        <div v-if="currentUser" class="upload-actions">
+          <button class="upload-button" @click="uploadSampleBooks">
+            Upload Sample Books to Firebase
+          </button>
         </div>
       </section>
 
@@ -90,7 +101,6 @@
         <div class="container">
           <h2 class="featured-heading">Featured Books</h2>
           <div class="books-grid">
-            <!-- Book cards would go here -->
             <div class="book-card" v-for="book in featuredBooks" :key="book.id">
               <div class="book-cover" :style="{ backgroundColor: book.color }">
                 <h3>{{ book.title }}</h3>
@@ -127,10 +137,16 @@
 </template>
 
 <script>
+/* eslint-disable */
+import LoginModal from '@/components/LoginModal.vue';
+import authService from '@/services/authService';
 import bookService from '@/services/bookService';
 
 export default {
   name: 'App',
+  components: {
+    LoginModal
+  },
   data() {
     return {
       searchQuery: '',
@@ -138,7 +154,24 @@ export default {
       searchResults: [],
       isSearching: false,
       searchTimeout: null,
+      showLoginModal: false,
+      currentUser: null,
     };
+  },
+
+  computed: {
+    getUserDisplayName() {
+      if (!this.currentUser) return '';
+      return this.currentUser.displayName || this.currentUser.email.split('@')[0] || 'User';
+    }
+  },
+
+  created() {
+    // Initialize auth service
+    authService.init();
+
+    // Check authentication state
+    this.checkAuthState();
   },
 
   watch: {
@@ -216,6 +249,127 @@ export default {
         : Math.floor(Math.random() * colors.length);
 
       return { backgroundColor: colors[index] };
+    },
+
+    checkAuthState() {
+      // Check initial auth state
+      this.currentUser = authService.getCurrentUser();
+
+      // Set up a watcher for auth changes
+      const authCheckInterval = setInterval(() => {
+        const user = authService.getCurrentUser();
+        if (JSON.stringify(user) !== JSON.stringify(this.currentUser)) {
+          this.currentUser = user;
+        }
+      }, 1000);
+
+      // Clean up interval when component is destroyed
+      this.$options.beforeDestroy = () => {
+        clearInterval(authCheckInterval);
+      };
+    },
+
+    handleAuthSuccess() {
+      this.currentUser = authService.getCurrentUser();
+    },
+
+    async logout() {
+      try {
+        await authService.signOut();
+        this.currentUser = null;
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+    },
+
+    async uploadSampleBooks() {
+      try {
+        const booksData = await import('@/data/books.json');
+        const books = booksData.default.books || [];
+
+        if (books.length === 0) {
+          alert('No books found in the sample data.');
+          return;
+        }
+
+        // Get Firestore from firebase/index.js
+        const { db, firestoreLib } = await import('@/firebase');
+        const { collection, getDocs, addDoc, query, where } = firestoreLib;
+
+        // Step 1: Check for existing books
+        console.log('Checking for existing books...');
+        this.isLoading = true;
+
+        // Get existing books from Firestore
+        const querySnapshot = await getDocs(collection(db, 'books'));
+        const existingBooks = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+        console.log(`Found ${existingBooks.length} existing books in Firestore`);
+
+        // Step 2: Identify new books vs. duplicates
+        const newBooks = [];
+        const duplicates = [];
+
+        for (const book of books) {
+          // Check if book already exists (by ISBN or title+author combination)
+          const isDuplicate = existingBooks.some(existingBook =>
+            // If book has ISBN, check for ISBN match
+            (book.isbn && existingBook.isbn === book.isbn) ||
+            // Otherwise check title+author match
+            (existingBook.title === book.title && existingBook.author === book.author)
+          );
+
+          if (isDuplicate) {
+            duplicates.push(book);
+          } else {
+            newBooks.push(book);
+          }
+        }
+
+        // Step 3: Ask for confirmation with details
+        const confirmMessage =
+          `Found ${books.length} books in sample data:\n` +
+          `- ${newBooks.length} new books to upload\n` +
+          `- ${duplicates.length} duplicates that will be skipped\n\n` +
+          `Proceed with upload?`;
+
+        if (!confirm(confirmMessage)) {
+          this.isLoading = false;
+          return;
+        }
+
+        // Step 4: Upload only new books
+        console.log(`Uploading ${newBooks.length} new books...`);
+
+        let uploadedCount = 0;
+
+        for (const book of newBooks) {
+          // Add book to Firestore
+          await addDoc(collection(db, 'books'), {
+            ...book,
+            status: book.status || 'available',
+            addedAt: new Date().toISOString()
+          });
+
+          uploadedCount++;
+        }
+
+        alert(`Successfully uploaded ${uploadedCount} new books to Firebase!\n${duplicates.length} duplicates were skipped.`);
+
+        // Refresh search to show the new books
+        if (this.searchQuery) {
+          this.performSearch();
+        }
+
+      } catch (error) {
+        console.error('Error uploading books:', error);
+        alert(`Error uploading books: ${error.message}`);
+      } finally {
+        this.isLoading = false;
+      }
     }
   }
 };
@@ -285,6 +439,33 @@ body {
   flex-direction: column;
 }
 
+/* Login Modal */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.user-name {
+  color: white;
+  font-weight: 500;
+}
+
+.logout-button {
+  background-color: transparent;
+  border: 0.1rem solid #e74c3c;
+  color: var(--accent-color);
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-button:hover {
+  background-color: var(--accent-hover);
+  color: white;
+}
+
 /* Header */
 .header {
   display: flex;
@@ -325,6 +506,7 @@ body {
 
 .login-button {
   cursor: pointer;
+  font-weight: 500;
 
   background-color: var(--accent-color);
   color: var(--bg-secondary);
@@ -334,14 +516,14 @@ body {
   border: none;
   border-radius: 4px;
 
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .login-button:hover {
   background-color: var(--accent-hover);
   box-shadow: 0 5px 0 hsla(0, 83%, 37%, 0.212);
   transform: translateY(-2px);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
 }
 
 /* Main content */
@@ -385,6 +567,28 @@ section {
   color: var(--text-secondary);
   font-size: 0.8rem;
 } */
+
+/* Upload */
+.upload-actions {
+  margin: 1.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.upload-button {
+  background-color: var(--bg-secondary);
+  border: none;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.upload-button:hover {
+  background-color: var(--border-color);
+}
 
 /* Search Results */
 .search-results {
