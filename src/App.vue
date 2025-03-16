@@ -33,7 +33,7 @@
       </section>
 
       <section class="search-results" v-if="searchQuery.trim()">
-        <div class="container">
+        <div class="container flex-col gap-2">
           <h2 class="search-results-heading">Search Results</h2>
 
           <div v-if="isSearching" class="loading-results">
@@ -66,9 +66,11 @@
       </section>
 
       <section class="hero">
-        <div class="container">
-          <h2 class="hero-heading">Welcome to BookBuddy</h2>
-          <p class="tagline">Connecting book donors and seekers</p>
+        <div class="container flex-col gap-2">
+          <div class="hero-text">
+            <h2 class="hero-heading">Welcome to BookBuddy</h2>
+            <p class="hero-tagline">Connecting book donors and seekers</p>
+          </div>
 
           <div class="cta-buttons">
             <button class="cta-button donate">Donate Books</button>
@@ -81,34 +83,17 @@
         <div class="container">
           <h2 class="feature-heading">How it works</h2>
           <div class="features">
-            <div class="feature">
+            <div class="feature flex-col gap-1">
               <h3>List Your Books</h3>
               <p>Share books you no longer need</p>
             </div>
-            <div class="feature">
+            <div class="feature flex-col gap-1">
               <h3>Find Books</h3>
               <p>Browse available books near you</p>
             </div>
-            <div class="feature">
+            <div class="feature flex-col gap-1">
               <h3>Connect</h3>
               <p>Message donors and arrange pickup</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="featured-books">
-        <div class="container">
-          <h2 class="featured-heading">Featured Books</h2>
-          <div class="books-grid">
-            <div class="book-card" v-for="book in featuredBooks" :key="book.id">
-              <div class="book-cover" :style="{ backgroundColor: book.color }">
-                <h3>{{ book.title }}</h3>
-              </div>
-              <div class="book-info">
-                <p class="book-author">{{ book.author }}</p>
-                <p class="book-category">{{ book.category }}</p>
-              </div>
             </div>
           </div>
         </div>
@@ -417,7 +402,7 @@ body {
 }
 
 #app {
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   margin: 0 auto;
 
@@ -438,6 +423,19 @@ body {
 
 .ta-right {
   text-align: right;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.gap-1 {
+  gap: 1rem;
+}
+
+.gap-2 {
+  gap: 2rem;
 }
 
 
@@ -600,12 +598,11 @@ section {
 
 /* Search Results */
 .search-results {
-  padding: 3rem 0;
+  padding: 2rem 0;
 }
 
 .search-results-heading {
   text-align: center;
-  margin: 3rem 0;
 }
 
 .loading-results,
@@ -697,10 +694,9 @@ section {
   text-align: center;
 }
 
-.tagline {
+.hero-tagline {
   font-size: 1.2rem;
   color: var(--text-secondary);
-  margin-bottom: 2rem;
 }
 
 .cta-buttons {
@@ -766,7 +762,6 @@ h2 {
 
 h3 {
   color: var(--accent-color);
-  margin-bottom: 1rem;
 }
 
 .books-grid {
