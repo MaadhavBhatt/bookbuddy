@@ -2,6 +2,9 @@
   <div id="app" class="dark-mode">
     <login-modal :show="showLoginModal" @close="showLoginModal = false" @auth-success="handleAuthSuccess" />
 
+    <donate-modal :show="showDonateModal" @close="showDonateModal = false" @donate-success="handleDonateSuccess"
+      :currentUser="currentUser" />
+
     <header class="header">
       <div class="header-info">
         <img alt="BookBuddy logo" src="./assets/logo.png" class="logo" />
@@ -73,8 +76,8 @@
           </div>
 
           <div class="cta-buttons">
-            <button class="cta-button donate">Donate Books</button>
-            <button class="cta-button find">Find Books</button>
+            <button class="cta-button donate" @click="openDonateModal">Donate Books</button>
+            <button class="cta-button find" @click="focusSearch">Find Books</button>
           </div>
         </div>
       </section>
@@ -123,6 +126,7 @@
 
 <script>
 /* eslint-disable */
+import DonateModal from '@/components/DonateModal.vue';
 import LoginModal from '@/components/LoginModal.vue';
 import authService from '@/services/authService';
 import bookService from '@/services/bookService';
@@ -130,7 +134,8 @@ import bookService from '@/services/bookService';
 export default {
   name: 'App',
   components: {
-    LoginModal
+    LoginModal,
+    DonateModal
   },
   data() {
     return {
@@ -141,6 +146,7 @@ export default {
       searchTimeout: null,
       showLoginModal: false,
       currentUser: null,
+      showDonateModal: false,
     };
   },
 
@@ -187,6 +193,10 @@ export default {
   },
 
   methods: {
+    focusSearch() {
+      this.$refs.searchInput.focus();
+    },
+
     async performSearch() {
       try {
         this.searchResults = await bookService.searchBooks(this.searchQuery);
@@ -256,6 +266,7 @@ export default {
 
     handleAuthSuccess() {
       this.currentUser = authService.getCurrentUser();
+      this.$emit('auth-success');
     },
 
     async logout() {
@@ -355,36 +366,40 @@ export default {
       } finally {
         this.isLoading = false;
       }
+    },
+
+    openDonateModal() {
+      if (!this.currentUser) {
+        // Prompt login first if not logged in
+        this.showLoginModal = true;
+        // Store intent to open donate modal after login
+        this.$once('auth-success', () => {
+          this.showDonateModal = true;
+        });
+      } else {
+        // User is logged in, show donate modal directly
+        this.showDonateModal = true;
+      }
+    },
+
+    handleDonateSuccess(bookData) {
+      // Handle successful donation
+      alert(`Thank you for donating "${bookData.title}"!`);
+      // Refresh search if needed
+      if (this.searchQuery) {
+        this.performSearch();
+      }
     }
   }
 };
 </script>
 
 <style>
-/* Import Montserrat font */
+@import url(styles/variables.css);
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-/* Base styles - Dark mode by default */
-/*
-Color Scheme:
-  #333333
-  #B0FFA1
-  #E4B304
-  #F121EB
-*/
 
-:root {
-  --bg-primary: #1e1e1e;
-  --bg-secondary: #1e1e1e;
-  --bg-tertiary: #2a2a2a;
-  --text-primary: #e0e0e0;
-  --text-secondary: #b0b0b0;
-  --accent-color: #b0ffa1;
-  --accent-hover: #e4b304;
-  --accent-blue: #f121eb;
-  --border-color: #333;
-}
-
+/* Resets */
 * {
   margin: 0;
   padding: 0;
@@ -409,6 +424,7 @@ body {
   display: flex;
   flex-direction: column;
 }
+
 
 /* Utility CLasses */
 .container {
@@ -454,7 +470,7 @@ body {
 .logout-button {
   background-color: transparent;
   border: 0.1rem solid #e74c3c;
-  color: var(--accent-color);
+  color: var(--clr-yellow-1);
   padding: 0.5rem 1rem;
   border-radius: 0.4rem;
   cursor: pointer;
@@ -462,7 +478,7 @@ body {
 }
 
 .logout-button:hover {
-  background-color: var(--accent-hover);
+  background-color: var(--clr-yellow-2);
   color: white;
 }
 
@@ -499,7 +515,7 @@ body {
 .header-heading {
   font-size: 1.5em;
   text-align: center;
-  color: var(--accent-color);
+  color: var(--clr-yellow-1);
 }
 
 .user-account {
@@ -512,7 +528,7 @@ body {
   cursor: pointer;
   font-weight: 500;
 
-  background-color: var(--accent-color);
+  background-color: var(--clr-yellow-1);
   color: var(--bg-secondary);
 
   padding: 0.8rem 1.5rem;
@@ -524,7 +540,7 @@ body {
 }
 
 .login-button:hover {
-  background-color: var(--accent-hover);
+  background-color: var(--clr-yellow-2);
   box-shadow: 0 5px 0 hsla(0, 83%, 37%, 0.212);
   transform: translateY(-2px);
   transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
@@ -539,6 +555,7 @@ main {
 section {
   padding: 2rem 0;
 }
+
 
 /* Search */
 .search-container {
@@ -595,6 +612,7 @@ section {
 .upload-button:hover {
   background-color: var(--border-color);
 }
+
 
 /* Search Results */
 .search-results {
@@ -722,14 +740,14 @@ section {
 }
 
 .donate {
-  background-color: var(--accent-color);
+  background-color: var(--clr-yellow-1);
   color: var(--bg-secondary);
 }
 
 .find {
   background-color: transparent;
-  color: var(--accent-color);
-  border: 2px solid var(--accent-color);
+  color: var(--clr-yellow-1);
+  border: 2px solid var(--clr-yellow-1);
 }
 
 h2 {
@@ -761,7 +779,7 @@ h2 {
 }
 
 h3 {
-  color: var(--accent-color);
+  color: var(--clr-yellow-1);
 }
 
 .books-grid {
@@ -841,7 +859,7 @@ h3 {
 
 .footer-name {
   font-weight: bold;
-  color: var(--accent-color);
+  color: var(--clr-yellow-1);
 }
 
 .footer-center {
@@ -856,7 +874,7 @@ h3 {
 }
 
 .social-link:hover {
-  color: var(--accent-color);
+  color: var(--clr-yellow-1);
 }
 
 .footer-right {

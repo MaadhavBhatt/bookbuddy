@@ -1,0 +1,184 @@
+{
+  "books": [
+    {
+      "id": "catalog-1",
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "isbn": "9780061120084",
+      "description": "The unforgettable novel of a childhood in a sleepy Southern town and the crisis of conscience that rocked it.",
+      "publishYear": 1960,
+      "genre": "Fiction"
+    },
+    {
+      "id": "catalog-2",
+      "title": "1984",
+      "author": "George Orwell",
+      "isbn": "9780451524935",
+      "description": "A dystopian novel set in a totalitarian society, exploring the dangers of government overreach and media control.",
+      "publishYear": 1949,
+      "genre": "Science Fiction"
+    },
+    {
+      "id": "catalog-3",
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "isbn": "9780743273565",
+      "description": "A portrait of the Jazz Age in all of its decadence and excess.",
+      "publishYear": 1925,
+      "genre": "Fiction"
+    },
+    {
+      "id": "catalog-4",
+      "title": "Pride and Prejudice",
+      "author": "Jane Austen",
+      "isbn": "9780141439518",
+      "description": "The story follows the main character, Elizabeth Bennet, as she deals with issues of manners, upbringing, morality, education, and marriage.",
+      "publishYear": 1813,
+      "genre": "Fiction"
+    },
+    {
+      "id": "catalog-5",
+      "title": "The Hobbit",
+      "author": "J.R.R. Tolkien",
+      "isbn": "9780618260300",
+      "description": "Bilbo Baggins was a hobbit who wanted to be left alone in quiet comfort. But the wizard Gandalf came along with a band of homeless dwarves.",
+      "publishYear": 1937,
+      "genre": "Fantasy"
+    },
+    {
+      "id": "catalog-6",
+      "title": "Lord of the Flies",
+      "author": "William Golding",
+      "isbn": "9780399501487",
+      "description": "A group of British boys stuck on an uninhabited island who try to govern themselves with disastrous results.",
+      "publishYear": 1954,
+      "genre": "Fiction"
+    },
+    {
+      "id": "catalog-7",
+      "title": "The Catcher in the Rye",
+      "author": "J.D. Salinger",
+      "isbn": "9780316769488",
+      "description": "The story of Holden Caulfield, a teenage boy who has been expelled from prep school and is wandering around New York City.",
+      "publishYear": 1951,
+      "genre": "Fiction"
+    },
+    {
+      "id": "catalog-8",
+      "title": "Animal Farm",
+      "author": "George Orwell",
+      "isbn": "9780451526342",
+      "description": "A farm fable about the animals who rebel against their human farmer, hoping to create a society where animals can be equal, free, and happy.",
+      "publishYear": 1945,
+      "genre": "Fiction"
+    },
+    {
+      "id": "catalog-9",
+      "title": "Brave New World",
+      "author": "Aldous Huxley",
+      "isbn": "9780060850524",
+      "description": "A futuristic society that has embarked on a path to engineering social stability through genetic and conditioning technologies.",
+      "publishYear": 1932,
+      "genre": "Science Fiction"
+    },
+    {
+      "id": "catalog-10",
+      "title": "Fahrenheit 451",
+      "author": "Ray Bradbury",
+      "isbn": "9781451673319",
+      "description": "A dystopian novel set in a future where books are outlawed and 'firemen' burn any that are found.",
+      "publishYear": 1953,
+      "genre": "Science Fiction"
+    },
+    {
+      "id": "catalog-11",
+      "title": "The Odyssey",
+      "author": "Homer",
+      "isbn": "9780140268867",
+      "description": "The epic tale of Odysseus and his ten-year journey home after the Trojan War.",
+      "publishYear": -800,
+      "genre": "Classics"
+    },
+    {
+      "id": "catalog-12",
+      "title": "Romeo and Juliet",
+      "author": "William Shakespeare",
+      "isbn": "9780743477116",
+      "description": "The tragic story of two young star-crossed lovers whose deaths ultimately reconcile their feuding families.",
+      "publishYear": 1597,
+      "genre": "Drama"
+    },
+    {
+      "id": "catalog-13",
+      "title": "Macbeth",
+      "author": "William Shakespeare",
+      "isbn": "9780743477109",
+      "description": "A tragedy about a Scottish general who receives a prophecy from three witches that one day he will become King of Scotland.",
+      "publishYear": 1606,
+      "genre": "Drama"
+    },
+    {
+      "id": "catalog-14",
+      "title": "The Scarlet Letter",
+      "author": "Nathaniel Hawthorne",
+      "isbn": "9780142437261",
+      "description": "Set in 17th-century Puritan Massachusetts, this novel tells the story of Hester Prynne, who conceives a daughter through an affair.",
+      "publishYear": 1850,
+      "genre": "Fiction"
+    },
+    {
+      "id": "catalog-15",
+      "title": "Algebra 1",
+      "author": "McGraw-Hill Education",
+      "isbn": "9780078951152",
+      "description": "A comprehensive algebra textbook covering linear equations, inequalities, functions, and more.",
+      "publishYear": 2018,
+      "genre": "Textbook"
+    },
+    {
+      "id": "catalog-16",
+      "title": "Biology: The Dynamics of Life",
+      "author": "Glencoe",
+      "isbn": "9780078774720",
+      "description": "A biology textbook covering cells, genetics, evolution, and ecosystems.",
+      "publishYear": 2017,
+      "genre": "Textbook"
+    },
+    {
+      "id": "catalog-17",
+      "title": "World History: Patterns of Interaction",
+      "author": "McDougal Littell",
+      "isbn": "9780618187744",
+      "description": "A comprehensive world history textbook covering ancient civilizations to modern times.",
+      "publishYear": 2015,
+      "genre": "Textbook"
+    },
+    {
+      "id": "catalog-18",
+      "title": "Chemistry: Matter and Change",
+      "author": "Glencoe",
+      "isbn": "9780078746376",
+      "description": "A chemistry textbook covering atomic structure, chemical reactions, and more.",
+      "publishYear": 2016,
+      "genre": "Textbook"
+    },
+    {
+      "id": "catalog-19",
+      "title": "Geometry",
+      "author": "Holt McDougal",
+      "isbn": "9780030995750",
+      "description": "A geometry textbook covering points, lines, planes, and geometric figures.",
+      "publishYear": 2014,
+      "genre": "Textbook"
+    },
+    {
+      "id": "catalog-20",
+      "title": "The American Nation",
+      "author": "Prentice Hall",
+      "isbn": "9780134353029",
+      "description": "A United States history textbook covering pre-colonization to modern America.",
+      "publishYear": 2019,
+      "genre": "Textbook"
+    }
+  ]
+}

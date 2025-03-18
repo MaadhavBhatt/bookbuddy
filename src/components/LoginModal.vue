@@ -146,6 +146,8 @@ export default {
 </script>
 
 <style scoped>
+@import url(../styles/variables.css);
+
 * {
   font-family: 'Montserrat', sans-serif;
   font-size: 10px;
@@ -260,11 +262,11 @@ button:disabled {
 }
 
 .submit-button {
-  background-color: var(--accent-hover);
+  background-color: var(--clr-yellow-2);
 }
 
 .submit-button:hover:not(:disabled) {
-  background-color: var(--accent-color);
+  background-color: var(--clr-yellow-1);
 }
 
 .google-button {

@@ -1,0 +1,23 @@
+/*
+Color Scheme:
+  #333333
+  #B0FFA1
+  #E4B304
+  #F121EB
+*/
+
+:root {
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #1e1e1e;
+  --bg-tertiary: #2a2a2a;
+
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+
+  --clr-yellow-1: #b0ffa1;
+  --clr-yellow-2: #e4b304;
+  --clr-blue: #f121eb;
+  --clr-grey: #16a591;
+
+  --border-color: #333;
+}
