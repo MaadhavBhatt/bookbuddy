@@ -34,13 +34,6 @@
         <div class="container search-container">
           <input type="text" placeholder="Search books (Ctrl+P)..." class="search-input" @focus="searchFocused = true"
             @blur="searchFocused = false" v-model="searchQuery" ref="searchInput" />
-          <template><span class="search-shortcut" v-if="!searchFocused">Ctrl+P</span></template>
-        </div>
-
-        <div v-if="currentUser" class="upload-actions">
-          <button class="upload-button" @click="uploadSampleBooks">
-            Upload Sample Books to Firebase
-          </button>
         </div>
       </section>
 
@@ -290,96 +283,6 @@ export default {
       }
     },
 
-    async uploadSampleBooks() {
-      try {
-        const booksData = await import('@/data/books.json');
-        const books = booksData.default.books || [];
-
-        if (books.length === 0) {
-          alert('No books found in the sample data.');
-          return;
-        }
-
-        // Get Firestore from firebase/index.js
-        const { db, firestoreLib } = await import('@/firebase');
-        const { collection, getDocs, addDoc, query, where } = firestoreLib;
-
-        // Step 1: Check for existing books
-        console.log('Checking for existing books...');
-        this.isLoading = true;
-
-        // Get existing books from Firestore
-        const querySnapshot = await getDocs(collection(db, 'books'));
-        const existingBooks = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-
-        console.log(`Found ${existingBooks.length} existing books in Firestore`);
-
-        // Step 2: Identify new books vs. duplicates
-        const newBooks = [];
-        const duplicates = [];
-
-        for (const book of books) {
-          // Check if book already exists (by ISBN or title+author combination)
-          const isDuplicate = existingBooks.some(existingBook =>
-            // If book has ISBN, check for ISBN match
-            (book.isbn && existingBook.isbn === book.isbn) ||
-            // Otherwise check title+author match
-            (existingBook.title === book.title && existingBook.author === book.author)
-          );
-
-          if (isDuplicate) {
-            duplicates.push(book);
-          } else {
-            newBooks.push(book);
-          }
-        }
-
-        // Step 3: Ask for confirmation with details
-        const confirmMessage =
-          `Found ${books.length} books in sample data:\n` +
-          `- ${newBooks.length} new books to upload\n` +
-          `- ${duplicates.length} duplicates that will be skipped\n\n` +
-          `Proceed with upload?`;
-
-        if (!confirm(confirmMessage)) {
-          this.isLoading = false;
-          return;
-        }
-
-        // Step 4: Upload only new books
-        console.log(`Uploading ${newBooks.length} new books...`);
-
-        let uploadedCount = 0;
-
-        for (const book of newBooks) {
-          // Add book to Firestore
-          await addDoc(collection(db, 'books'), {
-            ...book,
-            status: book.status || 'available',
-            addedAt: new Date().toISOString()
-          });
-
-          uploadedCount++;
-        }
-
-        alert(`Successfully uploaded ${uploadedCount} new books to Firebase!\n${duplicates.length} duplicates were skipped.`);
-
-        // Refresh search to show the new books
-        if (this.searchQuery) {
-          this.performSearch();
-        }
-
-      } catch (error) {
-        console.error('Error uploading books:', error);
-        alert(`Error uploading books: ${error.message}`);
-      } finally {
-        this.isLoading = false;
-      }
-    },
-
     openDonateModal() {
       if (!this.currentUser) {
         // Prompt login first if not logged in
@@ -421,7 +324,7 @@ export default {
 
 <style>
 @import url(styles/variables.css);
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
 
 
 /* Resets */
@@ -430,7 +333,7 @@ export default {
   padding: 0;
   box-sizing: border-box;
 
-  font-family: 'Monstserrat', sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 10px;
 }
 
@@ -592,7 +495,6 @@ option:hover {
 }
 
 
-
 /* Dashboard Modal */
 .dashboard-modal {
   position: fixed;
@@ -684,41 +586,6 @@ section {
 
   border: 1px solid var(--border-color);
   border-radius: 2rem;
-}
-
-/* .search-shortcut {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: var(--bg-tertiary);
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-} */
-
-
-/* Upload */
-.upload-actions {
-  margin: 1.5rem 0;
-  display: flex;
-  justify-content: center;
-}
-
-.upload-button {
-  background-color: var(--bg-secondary);
-  border: none;
-  color: white;
-  padding: 0.8rem 1.5rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.upload-button:hover {
-  background-color: var(--border-color);
 }
 
 
@@ -928,11 +795,6 @@ h3 {
   margin-bottom: 5px;
 }
 
-.book-category {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-}
-
 
 /* Footer */
 .footer {
@@ -946,7 +808,6 @@ h3 {
 }
 
 .footer-left,
-.footer-center,
 .footer-right {
   width: 100%;
   display: flex;
@@ -968,11 +829,6 @@ h3 {
 .footer-name {
   font-weight: bold;
   color: var(--clr-yellow-1);
-}
-
-.footer-center {
-  display: flex;
-  gap: 2rem;
 }
 
 .social-link {
@@ -1024,7 +880,6 @@ h3 {
   }
 
   .footer-left,
-  .footer-center,
   .footer-right {
     width: auto;
     margin-bottom: 0;
@@ -1044,12 +899,10 @@ h3 {
 
   .book-card {
     flex-direction: row;
-    /* height: 18rem; */
   }
 
   .book-cover {
     width: 12rem;
-    /* height: 100%; */
   }
 
   .book-info {
