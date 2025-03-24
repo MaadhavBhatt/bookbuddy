@@ -5,6 +5,14 @@
     <donate-modal :show="showDonateModal" @close="showDonateModal = false" @donate-success="handleDonateSuccess"
       :currentUser="currentUser" />
 
+    <div v-if="showDashboard && currentUser" class="dashboard-modal">
+      <div class="modal-backdrop" @click="showDashboard = false"></div>
+      <div class="dashboard-container">
+        <button class="close-dashboard" @click="showDashboard = false">&times;</button>
+        <user-dashboard :currentUser="currentUser" />
+      </div>
+    </div>
+
     <header class="header">
       <div class="header-info">
         <img alt="BookBuddy logo" src="./assets/logo.png" class="logo" />
@@ -14,6 +22,7 @@
       <div class="user-account">
         <div v-if="currentUser" class="user-info">
           <span class="user-name">{{ getUserDisplayName }}</span>
+          <button class="dashboard-button" @click="openDashboard">Dashboard</button>
           <button class="logout-button" @click="logout">Logout</button>
         </div>
         <button v-else class="login-button" @click="showLoginModal = true">Login</button>
@@ -126,6 +135,7 @@
 
 <script>
 /* eslint-disable */
+import UserDashboard from '@/components/UserDashboard.vue';
 import DonateModal from '@/components/DonateModal.vue';
 import LoginModal from '@/components/LoginModal.vue';
 import authService from '@/services/authService';
@@ -135,7 +145,8 @@ export default {
   name: 'App',
   components: {
     LoginModal,
-    DonateModal
+    DonateModal,
+    UserDashboard
   },
   data() {
     return {
@@ -147,6 +158,7 @@ export default {
       showLoginModal: false,
       currentUser: null,
       showDonateModal: false,
+      showDashboard: false,
     };
   },
 
@@ -389,6 +401,19 @@ export default {
       if (this.searchQuery) {
         this.performSearch();
       }
+    },
+
+    openDashboard() {
+      if (!this.currentUser) {
+        // Prompt login first if not logged in
+        this.showLoginModal = true;
+        // Listen for successful login, then open dashboard
+        this.$once('auth-success', () => {
+          this.showDashboard = true;
+        });
+      } else {
+        this.showDashboard = true;
+      }
     }
   }
 };
@@ -414,6 +439,26 @@ body {
   color: var(--text-primary);
   margin: 0;
   padding: 0;
+}
+
+select {
+  appearance: none;
+  border: none;
+  outline: none;
+}
+
+select:focus {
+  outline: none;
+  border: none;
+}
+
+option {
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+}
+
+option:hover {
+  background-color: var(--clr-yellow-2);
 }
 
 #app {
@@ -489,7 +534,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  gap: 1.5rem;
+  gap: 3rem;
 
   position: relative;
   padding: 3rem 0;
@@ -544,6 +589,69 @@ body {
   box-shadow: 0 5px 0 hsla(0, 83%, 37%, 0.212);
   transform: translateY(-2px);
   transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+
+
+
+/* Dashboard Modal */
+.dashboard-modal {
+  position: fixed;
+  inset: 0 0 0 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100vh;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-container {
+  position: relative;
+  padding: 3rem 1rem;
+
+  width: 95%;
+  max-width: 100rem;
+  min-height: 80vh;
+
+  background-color: var(--bg-tertiary);
+  border-radius: 0.8rem;
+  overflow: auto;
+  z-index: 102;
+}
+
+.close-dashboard {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 103;
+
+  font-size: 2.4rem;
+  color: var(--text-primary);
+}
+
+
+/* Dashboard Button */
+.dashboard-button {
+  background-color: var(--clr-yellow-1);
+  color: var(--bg-secondary);
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dashboard-button:hover {
+  background-color: var(--clr-yellow-2);
 }
 
 
@@ -886,11 +994,6 @@ h3 {
 
 /* Media queries */
 @media (min-width: 375px) {
-  .header {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
   .cta-buttons {
     flex-direction: row;
   }
@@ -898,6 +1001,13 @@ h3 {
   .books-grid,
   .results-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 500px) {
+  .header {
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
 
