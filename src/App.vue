@@ -39,8 +39,6 @@
 
       <section class="search-results" v-if="searchQuery.trim()">
         <div class="container flex-col gap-2">
-          <h2 class="search-results-heading">Search Results</h2>
-
           <div v-if="isSearching" class="loading-results">
             <p>Searching...</p>
           </div>
@@ -593,10 +591,6 @@ section {
 /* Search Results */
 .search-results {
   padding: 2rem 0;
-}
-
-.search-results-heading {
-  text-align: center;
 }
 
 .loading-results,
