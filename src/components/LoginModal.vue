@@ -149,7 +149,7 @@ export default {
 @import url(../styles/variables.css);
 
 * {
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--ff-main);
   font-size: 10px;
 }
 

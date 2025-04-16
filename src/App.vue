@@ -39,8 +39,6 @@
 
       <section class="search-results" v-if="searchQuery.trim()">
         <div class="container flex-col gap-2">
-          <h2 class="search-results-heading">Search Results</h2>
-
           <div v-if="isSearching" class="loading-results">
             <p>Searching...</p>
           </div>
@@ -52,15 +50,12 @@
           <div v-else class="results-grid">
             <div v-for="book in searchResults" :key="book.id" class="book-card">
               <div class="book-cover" :style="getBookCoverStyle(book)"></div>
-              <div class="book-info">
+              <div class="book-info flex-col gap-half">
                 <h3 class="book-title">{{ book.title }}</h3>
                 <p class="book-author">by {{ book.author }}</p>
-                <div class="book-meta">
-                  <span v-if="book.genre" class="book-genre">{{ book.genre }}</span>
-                  <span class="book-status" :class="book.status">
-                    {{ getStatusText(book.status) }}
-                  </span>
-                </div>
+                <span class="book-status" :class="book.status">
+                  {{ getStatusText(book.status) }}
+                </span>
                 <p v-if="book.description" class="book-description">
                   {{ truncateText(book.description, 100) }}
                 </p>
@@ -333,7 +328,7 @@ export default {
   padding: 0;
   box-sizing: border-box;
 
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: var(--ff-main);
   font-size: 10px;
 }
 
@@ -392,6 +387,10 @@ option:hover {
 .flex-col {
   display: flex;
   flex-direction: column;
+}
+
+.gap-half {
+  gap: 0.5rem;
 }
 
 .gap-1 {
@@ -575,7 +574,7 @@ section {
 }
 
 .search-input {
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--ff-main);
   font-size: clamp(1rem, 5vw, 1.5rem);
 
   color: var(--text-primary);
@@ -594,10 +593,6 @@ section {
   padding: 2rem 0;
 }
 
-.search-results-heading {
-  text-align: center;
-}
-
 .loading-results,
 .no-results {
   padding: 2rem;
@@ -611,8 +606,10 @@ section {
   gap: 2rem;
 }
 
+
+/* Book Card */
 .book-card {
-  background-color: #2c2c2c;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -630,6 +627,17 @@ section {
   background-color: #3498db;
 }
 
+.book-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  min-height: 15rem;
+  padding: 2rem;
+}
+
 .book-info {
   padding: 1.5rem;
 }
@@ -643,21 +651,8 @@ section {
   font-style: italic;
 }
 
-.book-meta {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.book-genre {
-  background-color: #444;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  color: #ddd;
-}
-
 .book-status {
+  width: fit-content;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 0.8rem;
@@ -757,44 +752,6 @@ h3 {
   color: var(--clr-yellow-1);
 }
 
-.books-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.book-card {
-  background-color: var(--bg-secondary);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.3s;
-}
-
-.book-card:hover {
-  transform: translateY(-5px);
-}
-
-.book-cover {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: white;
-
-  min-height: 15rem;
-  padding: 2rem;
-}
-
-.book-info {
-  padding: 1.5rem;
-}
-
-.book-author {
-  font-style: italic;
-  margin-bottom: 5px;
-}
-
 
 /* Footer */
 .footer {
@@ -854,7 +811,6 @@ h3 {
     flex-direction: row;
   }
 
-  .books-grid,
   .results-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -891,8 +847,6 @@ h3 {
 }
 
 @media (min-width: 992px) {
-
-  .books-grid,
   .results-grid {
     grid-template-columns: repeat(3, 1fr);
   }
