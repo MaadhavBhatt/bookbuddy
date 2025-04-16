@@ -393,10 +393,10 @@ export default {
   font-size: 2.4rem;
   color: #aaa;
   cursor: pointer;
-}
 
-.close-button:hover {
-  color: white;
+  &:hover {
+    color: white;
+  }
 }
 
 .modal-body {
@@ -469,10 +469,10 @@ export default {
   padding: 1rem 1.5rem;
   cursor: pointer;
   transition: background-color 0.2s;
-}
 
-.search-result-item:hover {
-  background-color: #444;
+  &:hover {
+    background-color: #444;
+  }
 }
 
 .result-title {
@@ -549,22 +549,21 @@ button:disabled {
 
 .submit-button {
   background-color: var(--clr-yellow-1);
-}
 
-
-.submit-button:hover:not(:disabled) {
-  background-color: var(--clr-yellow-2);
+  &:hover:not(:disabled) {
+    background-color: var(--clr-yellow-2);
+  }
 }
 
 .cancel-button {
   background-color: transparent;
   border: 0.1rem solid;
   color: var(--clr-grey);
-}
 
-.cancel-button:hover {
-  background-color: var(--clr-grey);
-  color: white;
+  &:hover {
+    background-color: var(--clr-grey);
+    color: white;
+  }
 }
 
 @media (max-width: 425px) {

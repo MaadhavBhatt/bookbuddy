@@ -353,10 +353,10 @@ select:focus {
 option {
   color: var(--text-primary);
   background-color: var(--bg-secondary);
-}
 
-option:hover {
-  background-color: var(--clr-yellow-2);
+  &:hover {
+    background-color: var(--clr-yellow-2);
+  }
 }
 
 #app {
@@ -422,11 +422,11 @@ option:hover {
   border-radius: 0.4rem;
   cursor: pointer;
   transition: all 0.2s;
-}
 
-.logout-button:hover {
-  background-color: var(--clr-yellow-2);
-  color: white;
+  &:hover {
+    background-color: var(--clr-yellow-2);
+    color: white;
+  }
 }
 
 
@@ -484,13 +484,13 @@ option:hover {
   border-radius: 4px;
 
   transition: background-color 0.2s ease;
-}
 
-.login-button:hover {
-  background-color: var(--clr-yellow-2);
-  box-shadow: 0 5px 0 hsla(0, 83%, 37%, 0.212);
-  transform: translateY(-2px);
-  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+  &:hover {
+    background-color: var(--clr-yellow-2);
+    box-shadow: 0 5px 0 hsla(0, 83%, 37%, 0.212);
+    transform: translateY(-2px);
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+  }
 }
 
 
@@ -549,10 +549,10 @@ option:hover {
   border-radius: 0.4rem;
   cursor: pointer;
   transition: background-color 0.2s;
-}
 
-.dashboard-button:hover {
-  background-color: var(--clr-yellow-2);
+  &:hover {
+    background-color: var(--clr-yellow-2);
+  }
 }
 
 
@@ -616,10 +616,10 @@ section {
   transition: transform 0.2s;
   display: flex;
   flex-direction: column;
-}
 
-.book-card:hover {
-  transform: translateY(-5px);
+  &:hover {
+    transform: translateY(-5px);
+  }
 }
 
 .book-cover {
@@ -792,10 +792,10 @@ h3 {
   color: var(--text-secondary);
   text-decoration: none;
   width: 100%;
-}
 
-.social-link:hover {
-  color: var(--clr-yellow-1);
+  &:hover {
+    color: var(--clr-yellow-1);
+  }
 }
 
 .footer-right {

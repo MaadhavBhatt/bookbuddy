@@ -204,10 +204,10 @@ export default {
   font-size: 2.4rem;
   color: #aaa;
   cursor: pointer;
-}
 
-.close-button:hover {
-  color: white;
+  &:hover {
+    color: white;
+  }
 }
 
 .modal-body {
@@ -263,34 +263,34 @@ button:disabled {
 
 .submit-button {
   background-color: var(--clr-yellow-2);
-}
 
-.submit-button:hover:not(:disabled) {
-  background-color: var(--clr-yellow-1);
+  &:hover:not(:disabled) {
+    background-color: var(--clr-yellow-1);
+  }
 }
 
 .google-button {
   background-color: white;
   color: #333;
-}
 
-.google-button:hover:not(:disabled) {
-  background-color: #f1f1f1;
+  &:hover:not(:disabled) {
+    background-color: #f1f1f1;
+  }
 }
 
 .toggle-mode {
   margin-top: 2rem;
   text-align: center;
   color: #bbb;
-}
 
-.toggle-mode a {
-  color: #3498db;
-  text-decoration: none;
-}
+  & a {
+    color: #3498db;
+    text-decoration: none;
 
-.toggle-mode a:hover {
-  text-decoration: underline;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 @media screen and (max-width: 425px) {
