@@ -16,7 +16,7 @@
     <header class="header">
       <div class="header-info">
         <img alt="BookBuddy logo" src="./assets/logo.png" class="logo" />
-        <h1 class="header-heading">BookBuddy</h1>
+        <p class="header-heading">BookBuddy</p>
       </div>
 
       <div class="user-account">
@@ -34,6 +34,7 @@
         <div class="container search-container">
           <input type="text" placeholder="Search books (Ctrl+P)..." class="search-input" @focus="searchFocused = true"
             @blur="searchFocused = false" v-model="searchQuery" ref="searchInput" />
+          <button class="cta-button donate" @click="openDonateModal">+</button>
         </div>
       </section>
 
@@ -66,33 +67,25 @@
       </section>
 
       <section class="hero">
-        <div class="container flex-col gap-2">
-          <div class="hero-text">
-            <h2 class="hero-heading">Welcome to BookBuddy</h2>
-            <p class="hero-tagline">Connecting book donors and seekers</p>
-          </div>
-
-          <div class="cta-buttons">
-            <button class="cta-button donate" @click="openDonateModal">Donate Books</button>
-            <button class="cta-button find" @click="focusSearch">Find Books</button>
-          </div>
+        <div class="container hero-text">
+          <h2 class="hero-heading">Welcome to BookBuddy</h2>
+          <p class="hero-tagline">Connecting book donors and seekers</p>
         </div>
       </section>
 
       <section class="intro">
         <div class="container">
-          <h2 class="feature-heading">How it works</h2>
           <div class="features">
             <div class="feature flex-col gap-1">
-              <h3>List Your Books</h3>
+              <h3 class="clr-yellow-1">List Your Books</h3>
               <p>Share books you no longer need</p>
             </div>
             <div class="feature flex-col gap-1">
-              <h3>Find Books</h3>
+              <h3 class="clr-yellow-1">Find Books</h3>
               <p>Browse available books near you</p>
             </div>
             <div class="feature flex-col gap-1">
-              <h3>Connect</h3>
+              <h3 class="clr-yellow-1">Connect</h3>
               <p>Message donors and arrange pickup</p>
             </div>
           </div>
@@ -353,10 +346,10 @@ select:focus {
 option {
   color: var(--text-primary);
   background-color: var(--bg-secondary);
-}
 
-option:hover {
-  background-color: var(--clr-yellow-2);
+  &:hover {
+    background-color: var(--clr-yellow-2);
+  }
 }
 
 #app {
@@ -401,6 +394,10 @@ option:hover {
   gap: 2rem;
 }
 
+.clr-yellow-1 {
+  color: var(--clr-yellow-1);
+}
+
 
 /* Login Modal */
 .user-info {
@@ -422,11 +419,11 @@ option:hover {
   border-radius: 0.4rem;
   cursor: pointer;
   transition: all 0.2s;
-}
 
-.logout-button:hover {
-  background-color: var(--clr-yellow-2);
-  color: white;
+  &:hover {
+    background-color: var(--clr-yellow-2);
+    color: white;
+  }
 }
 
 
@@ -460,7 +457,8 @@ option:hover {
 }
 
 .header-heading {
-  font-size: 1.5em;
+  font-size: clamp(1.5em, 5vw, 2em);
+  font-weight: 700;
   text-align: center;
   color: var(--clr-yellow-1);
 }
@@ -484,13 +482,13 @@ option:hover {
   border-radius: 4px;
 
   transition: background-color 0.2s ease;
-}
 
-.login-button:hover {
-  background-color: var(--clr-yellow-2);
-  box-shadow: 0 5px 0 hsla(0, 83%, 37%, 0.212);
-  transform: translateY(-2px);
-  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+  &:hover {
+    background-color: var(--clr-yellow-2);
+    box-shadow: 0 5px 0 hsla(0, 83%, 37%, 0.212);
+    transform: translateY(-2px);
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+  }
 }
 
 
@@ -549,10 +547,10 @@ option:hover {
   border-radius: 0.4rem;
   cursor: pointer;
   transition: background-color 0.2s;
-}
 
-.dashboard-button:hover {
-  background-color: var(--clr-yellow-2);
+  &:hover {
+    background-color: var(--clr-yellow-2);
+  }
 }
 
 
@@ -571,6 +569,9 @@ section {
   position: relative;
   max-width: 40rem;
   margin: 0 auto;
+
+  display: flex;
+  gap: 2rem;
 }
 
 .search-input {
@@ -585,6 +586,24 @@ section {
 
   border: 1px solid var(--border-color);
   border-radius: 2rem;
+}
+
+.cta-button {
+  cursor: pointer;
+
+  font-size: 2rem;
+  font-weight: 400;
+
+  padding: 0 2rem;
+
+  border: none;
+  border-radius: 50%;
+  aspect-ratio: 1;
+
+  &.donate {
+    background-color: var(--clr-yellow-1);
+    color: var(--bg-secondary);
+  }
 }
 
 
@@ -616,10 +635,10 @@ section {
   transition: transform 0.2s;
   display: flex;
   flex-direction: column;
-}
 
-.book-card:hover {
-  transform: translateY(-5px);
+  &:hover {
+    transform: translateY(-5px);
+  }
 }
 
 .book-cover {
@@ -682,53 +701,15 @@ section {
   text-align: center;
 }
 
+.hero-heading {
+  font-size: clamp(3em, 5vw, 5em);
+  color: var(--clr-yellow-1);
+  font-weight: 700;
+}
+
 .hero-tagline {
   font-size: 1.2rem;
   color: var(--text-secondary);
-}
-
-.cta-buttons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-
-  margin: 0 auto;
-}
-
-.cta-button {
-  cursor: pointer;
-
-  font-size: 1rem;
-  font-weight: bold;
-
-  padding: 12px 20px;
-
-  border: none;
-  border-radius: 6px;
-}
-
-.donate {
-  background-color: var(--clr-yellow-1);
-  color: var(--bg-secondary);
-}
-
-.find {
-  background-color: transparent;
-  color: var(--clr-yellow-1);
-  border: 2px solid var(--clr-yellow-1);
-}
-
-h2 {
-  font-size: 1.5rem;
-  text-align: center;
-}
-
-.feature-heading {
-  padding: 1rem;
-  width: fit-content;
-  margin: 0 auto;
 }
 
 .features {
@@ -746,10 +727,6 @@ h2 {
   padding: 1rem;
   border-radius: 8px;
   text-align: center;
-}
-
-h3 {
-  color: var(--clr-yellow-1);
 }
 
 
@@ -791,11 +768,10 @@ h3 {
 .social-link {
   color: var(--text-secondary);
   text-decoration: none;
-  width: 100%;
-}
 
-.social-link:hover {
-  color: var(--clr-yellow-1);
+  &:hover {
+    color: var(--clr-yellow-1);
+  }
 }
 
 .footer-right {
