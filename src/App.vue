@@ -29,8 +29,10 @@
       </div>
     </header>
 
+    <div class="search-overlay" v-if="searchFocused" @click="unfocusSearch"></div>
+
     <main>
-      <section class="search">
+      <section class="search" :class="{ 'search-focused': searchFocused }">
         <div class="container search-container">
           <input type="text" placeholder="Search books (Ctrl+P)..." class="search-input" @focus="searchFocused = true"
             @blur="searchFocused = false" v-model="searchQuery" ref="searchInput" />
@@ -188,6 +190,12 @@ export default {
   methods: {
     focusSearch() {
       this.$refs.searchInput.focus();
+      this.searchFocused = true;
+    },
+
+    unfocusSearch() {
+      this.$refs.searchInput.blur();
+      this.searchFocused = false;
     },
 
     async performSearch() {
@@ -565,6 +573,34 @@ section {
 
 
 /* Search */
+.search {
+  position: relative;
+  z-index: 5;
+  transition: transform 0.3s ease, z-index 0s ease;
+  margin: 0 auto;
+
+  /* Ensure that transform: scale doesn't cause overflow */
+  width: 97%;
+}
+
+.search-focused {
+  position: relative;
+
+  /* Change .search width if you change transform scale() */
+  transform: translateY(5px) scale(1.03);
+
+  z-index: 100;
+  transform-origin: center center;
+}
+
+.search-overlay {
+  position: fixed;
+  inset: 0 0 0 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 90;
+  animation: fade-in 0.3s ease;
+}
+
 .search-container {
   position: relative;
   max-width: 40rem;
@@ -609,7 +645,9 @@ section {
 
 /* Search Results */
 .search-results {
+  position: relative;
   padding: 2rem 0;
+  z-index: 90;
 }
 
 .loading-results,
@@ -778,6 +816,18 @@ section {
   text-align: center;
   color: var(--text-secondary);
   font-size: 0.9rem;
+}
+
+
+/* Keyframes */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 
