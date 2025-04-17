@@ -118,3 +118,7 @@ You may want to customize:
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Logo Credits
+
+Shoutout to Yaashica! 🥳
