@@ -41,10 +41,8 @@
       </section>
 
       <section class="search-results" v-if="searchQuery.trim()">
-        <div class="container flex-col gap-2">
-          <div v-if="isSearching" class="loading-results">
-            <p>Searching...</p>
-          </div>
+        <div class="container flex-col gap-2 align-center">
+          <div v-if="isSearching" class="loader"></div>
 
           <div v-else-if="searchResults.length === 0" class="no-results">
             <p>No books found matching "{{ searchQuery }}"</p>
@@ -390,6 +388,10 @@ option {
   flex-direction: column;
 }
 
+.align-center {
+  align-items: center;
+}
+
 .gap-half {
   gap: 0.5rem;
 }
@@ -650,7 +652,52 @@ section {
   z-index: 90;
 }
 
-.loading-results,
+/* From https: //css-loaders.com/dots/#l40 */
+.loader {
+  height: 15px;
+  aspect-ratio: 5;
+  --_g: no-repeat radial-gradient(farthest-side, var(--clr-yellow-1) 94%, transparent);
+  background: var(--_g), var(--_g), var(--_g), var(--_g);
+  background-size: 20% 100%;
+  animation: l40-1 0.75s infinite alternate, l40-2 1.5s infinite alternate;
+}
+
+@keyframes l40-1 {
+
+  0%,
+  10% {
+    background-position: 0 0, 0 0, 0 0, 0 0;
+  }
+
+  33% {
+    background-position: 0 0, calc(100% / 3) 0, calc(100% / 3) 0,
+      calc(100% / 3) 0;
+  }
+
+  66% {
+    background-position: 0 0, calc(100% / 3) 0, calc(2 * 100% / 3) 0,
+      calc(2 * 100% / 3) 0;
+  }
+
+  90%,
+  100% {
+    background-position: 0 0, calc(100% / 3) 0, calc(2 * 100% / 3) 0, 100% 0;
+  }
+}
+
+@keyframes l40-2 {
+
+  0%,
+  49.99% {
+    transform: scale(1);
+  }
+
+  50%,
+  100% {
+    transform: scale(-1);
+  }
+}
+
 .no-results {
   padding: 2rem;
   text-align: center;
