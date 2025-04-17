@@ -5,13 +5,7 @@
     <donate-modal :show="showDonateModal" @close="showDonateModal = false" @donate-success="handleDonateSuccess"
       :currentUser="currentUser" />
 
-    <div v-if="showDashboard && currentUser" class="dashboard-modal">
-      <div class="modal-backdrop" @click="showDashboard = false"></div>
-      <div class="dashboard-container">
-        <button class="close-dashboard" @click="showDashboard = false">&times;</button>
-        <user-dashboard :currentUser="currentUser" />
-      </div>
-    </div>
+    <user-dashboard v-if="showDashboard && currentUser" :currentUser="currentUser" @close="showDashboard = false" />
 
     <header class="header">
       <div class="header-info">
@@ -501,53 +495,6 @@ option {
   }
 }
 
-
-/* Dashboard Modal */
-.dashboard-modal {
-  position: fixed;
-  inset: 0 0 0 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  height: 100vh;
-  max-width: none;
-  margin: 0;
-  padding: 0;
-}
-
-.dashboard-container {
-  position: relative;
-  padding: 3rem 1rem;
-
-  width: 95%;
-  max-width: 100rem;
-  min-height: 80vh;
-
-  background-color: var(--bg-tertiary);
-  border-radius: 0.8rem;
-  overflow: auto;
-  z-index: 102;
-}
-
-.close-dashboard {
-  position: absolute;
-  top: 1.6rem;
-  right: 1.6rem;
-
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 103;
-
-  font-size: 2.4rem;
-  color: var(--text-primary);
-}
-
-
-/* Dashboard Button */
 .dashboard-button {
   background-color: var(--clr-yellow-1);
   color: var(--bg-secondary);
@@ -598,7 +545,7 @@ section {
 .search-overlay {
   position: fixed;
   inset: 0 0 0 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--clr-overlay);
   z-index: 90;
   animation: fade-in 0.3s ease;
 }

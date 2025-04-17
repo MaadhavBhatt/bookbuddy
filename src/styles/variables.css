@@ -22,6 +22,7 @@ Color Scheme:
   --clr-red-1: #ff6e42da;
 
   --border-color: #333;
+  --clr-overlay: rgba(0, 0, 0, 0.7);
 
   --ff-main: 'Source Sans 3', sans-serif;
 }

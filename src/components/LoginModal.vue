@@ -155,10 +155,7 @@ export default {
 
 .login-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0 0 0 0;
   z-index: 100;
   display: flex;
   align-items: center;
@@ -167,11 +164,8 @@ export default {
 
 .modal-backdrop {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0 0 0 0;
+  background-color: var(--clr-overlay);
 }
 
 .modal-content {

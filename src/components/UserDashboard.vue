@@ -1,133 +1,140 @@
 <template>
   <div class="dashboard">
-    <div class="dashboard__header">
-      <h2 class="dashboard__title">My Dashboard</h2>
-      <div class="dashboard__tabs">
-        <button class="dashboard__tab-button" :class="{ 'dashboard__tab-button--active': activeTab === 'requests' }"
-          @click="activeTab = 'requests'">
-          My Requests
-        </button>
-        <button class="dashboard__tab-button" :class="{ 'dashboard__tab-button--active': activeTab === 'donations' }"
-          @click="activeTab = 'donations'">
-          My Donations
-        </button>
-      </div>
-    </div>
+    <div class="dashboard-overlay" @click="close"></div>
 
-    <div v-if="activeTab === 'requests'" class="dashboard__content">
-      <div class="dashboard__filters">
-        <select v-model="requestFilter" class="dashboard__filter-select">
-          <option value="all">All Requests</option>
-          <option value="active">Active</option>
-          <option value="completed">Completed</option>
-        </select>
+    <div class="dashboard-content">
+      <button class="close-dashboard" @click="close">&times;</button>
+      <div class="dashboard__header">
+        <h2 class="dashboard__title">My Dashboard</h2>
+        <div class="dashboard__tabs">
+          <button class="dashboard__tab-button" :class="{ 'dashboard__tab-button--active': activeTab === 'requests' }"
+            @click="activeTab = 'requests'">
+            My Requests
+          </button>
+          <button class="dashboard__tab-button" :class="{ 'dashboard__tab-button--active': activeTab === 'donations' }"
+            @click="activeTab = 'donations'">
+            My Donations
+          </button>
+        </div>
       </div>
 
-      <div v-if="isLoading" class="dashboard__loading">
-        <div class="dashboard__spinner"></div>
-        <p class="dashboard__loading-text">Loading...</p>
+      <div v-if="activeTab === 'requests'" class="dashboard__content">
+        <div class="dashboard__filters">
+          <select v-model="requestFilter" class="dashboard__filter-select">
+            <option value="all">All Requests</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+
+        <div v-if="isLoading" class="dashboard__loading">
+          <div class="dashboard__spinner"></div>
+          <p class="dashboard__loading-text">Loading...</p>
+        </div>
+
+        <div v-else-if="filteredRequests.length === 0" class="dashboard__empty">
+          <p class="dashboard__empty-text">No requests found</p>
+        </div>
+
+        <ul v-else class="dashboard__list">
+          <li v-for="request in filteredRequests" :key="request.id" class="dashboard-card">
+            <div class="dashboard-card__header">
+              <div class="dashboard-card__image"
+                :style="request.bookCover ? `background-image: url(${request.bookCover})` : ''"></div>
+              <div class="dashboard-card__info">
+                <h3 class="dashboard-card__title">{{ request.bookTitle }}</h3>
+                <p class="dashboard-card__author">{{ request.bookAuthor }}</p>
+                <span class="dashboard-card__status" :class="`dashboard-card__status--${request.status}`">
+                  {{ getStatusLabel(request.status) }}
+                </span>
+              </div>
+            </div>
+            <div class="dashboard-card__details">
+              <div class="dashboard-card__detail">
+                <span class="dashboard-card__detail-label">Requested:</span>
+                <span class="dashboard-card__detail-value">{{ formatDate(request.requestDate) }}</span>
+              </div>
+              <div class="dashboard-card__detail">
+                <span class="dashboard-card__detail-label">Quantity:</span>
+                <span class="dashboard-card__detail-value">{{ request.quantity }}</span>
+              </div>
+            </div>
+            <div class="dashboard-card__actions">
+              <button v-if="request.status === 'pending'" class="dashboard-card__button dashboard-card__button--cancel"
+                @click="cancelRequest(request)">
+                Cancel
+              </button>
+              <button v-if="request.status === 'approved'"
+                class="dashboard-card__button dashboard-card__button--primary">
+                Contact Donor
+              </button>
+              <button v-if="request.status === 'ready'" class="dashboard-card__button dashboard-card__button--success"
+                @click="markReceived(request)">
+                Mark Received
+              </button>
+            </div>
+          </li>
+        </ul>
       </div>
 
-      <div v-else-if="filteredRequests.length === 0" class="dashboard__empty">
-        <p class="dashboard__empty-text">No requests found</p>
+      <div v-if="activeTab === 'donations'" class="dashboard__content">
+        <div class="dashboard__filters">
+          <select v-model="donationFilter" class="dashboard__filter-select">
+            <option value="all">All Donations</option>
+            <option value="available">Available</option>
+            <option value="transferred">Transferred</option>
+          </select>
+        </div>
+
+        <div v-if="isLoading" class="dashboard__loading">
+          <div class="dashboard__spinner"></div>
+          <p class="dashboard__loading-text">Loading...</p>
+        </div>
+
+        <div v-else-if="filteredDonations.length === 0" class="dashboard__empty">
+          <p class="dashboard__empty-text">No donations found</p>
+        </div>
+
+        <ul v-else class="dashboard__list">
+          <li v-for="donation in filteredDonations" :key="donation.id" class="dashboard-card">
+            <div class="dashboard-card__header">
+              <div class="dashboard-card__image"
+                :style="donation.coverImage ? `background-image: url(${donation.coverImage})` : ''"></div>
+              <div class="dashboard-card__info">
+                <h3 class="dashboard-card__title">{{ donation.title }}</h3>
+                <p class="dashboard-card__author">{{ donation.author }}</p>
+                <span class="dashboard-card__status" :class="`dashboard-card__status--${donation.status}`">
+                  {{ getStatusLabel(donation.status) }}
+                </span>
+              </div>
+            </div>
+            <div class="dashboard-card__details">
+              <div class="dashboard-card__detail">
+                <span class="dashboard-card__detail-label">Donated:</span>
+                <span class="dashboard-card__detail-value">{{ formatDate(donation.addedAt) }}</span>
+              </div>
+              <div class="dashboard-card__detail">
+                <span class="dashboard-card__detail-label">Copies:</span>
+                <span class="dashboard-card__detail-value">{{ donation.copies }}</span>
+              </div>
+              <div class="dashboard-card__detail">
+                <span class="dashboard-card__detail-label">Condition:</span>
+                <span class="dashboard-card__detail-value">{{ donation.condition }}</span>
+              </div>
+            </div>
+            <div class="dashboard-card__actions">
+              <button v-if="donation.status === 'available'"
+                class="dashboard-card__button dashboard-card__button--edit">
+                Edit
+              </button>
+              <button v-if="donation.status === 'requested'"
+                class="dashboard-card__button dashboard-card__button--primary">
+                View Requests
+              </button>
+            </div>
+          </li>
+        </ul>
       </div>
-
-      <ul v-else class="dashboard__list">
-        <li v-for="request in filteredRequests" :key="request.id" class="dashboard-card">
-          <div class="dashboard-card__header">
-            <div class="dashboard-card__image"
-              :style="request.bookCover ? `background-image: url(${request.bookCover})` : ''"></div>
-            <div class="dashboard-card__info">
-              <h3 class="dashboard-card__title">{{ request.bookTitle }}</h3>
-              <p class="dashboard-card__author">{{ request.bookAuthor }}</p>
-              <span class="dashboard-card__status" :class="`dashboard-card__status--${request.status}`">
-                {{ getStatusLabel(request.status) }}
-              </span>
-            </div>
-          </div>
-          <div class="dashboard-card__details">
-            <div class="dashboard-card__detail">
-              <span class="dashboard-card__detail-label">Requested:</span>
-              <span class="dashboard-card__detail-value">{{ formatDate(request.requestDate) }}</span>
-            </div>
-            <div class="dashboard-card__detail">
-              <span class="dashboard-card__detail-label">Quantity:</span>
-              <span class="dashboard-card__detail-value">{{ request.quantity }}</span>
-            </div>
-          </div>
-          <div class="dashboard-card__actions">
-            <button v-if="request.status === 'pending'" class="dashboard-card__button dashboard-card__button--cancel"
-              @click="cancelRequest(request)">
-              Cancel
-            </button>
-            <button v-if="request.status === 'approved'" class="dashboard-card__button dashboard-card__button--primary">
-              Contact Donor
-            </button>
-            <button v-if="request.status === 'ready'" class="dashboard-card__button dashboard-card__button--success"
-              @click="markReceived(request)">
-              Mark Received
-            </button>
-          </div>
-        </li>
-      </ul>
-    </div>
-
-    <div v-if="activeTab === 'donations'" class="dashboard__content">
-      <div class="dashboard__filters">
-        <select v-model="donationFilter" class="dashboard__filter-select">
-          <option value="all">All Donations</option>
-          <option value="available">Available</option>
-          <option value="transferred">Transferred</option>
-        </select>
-      </div>
-
-      <div v-if="isLoading" class="dashboard__loading">
-        <div class="dashboard__spinner"></div>
-        <p class="dashboard__loading-text">Loading...</p>
-      </div>
-
-      <div v-else-if="filteredDonations.length === 0" class="dashboard__empty">
-        <p class="dashboard__empty-text">No donations found</p>
-      </div>
-
-      <ul v-else class="dashboard__list">
-        <li v-for="donation in filteredDonations" :key="donation.id" class="dashboard-card">
-          <div class="dashboard-card__header">
-            <div class="dashboard-card__image"
-              :style="donation.coverImage ? `background-image: url(${donation.coverImage})` : ''"></div>
-            <div class="dashboard-card__info">
-              <h3 class="dashboard-card__title">{{ donation.title }}</h3>
-              <p class="dashboard-card__author">{{ donation.author }}</p>
-              <span class="dashboard-card__status" :class="`dashboard-card__status--${donation.status}`">
-                {{ getStatusLabel(donation.status) }}
-              </span>
-            </div>
-          </div>
-          <div class="dashboard-card__details">
-            <div class="dashboard-card__detail">
-              <span class="dashboard-card__detail-label">Donated:</span>
-              <span class="dashboard-card__detail-value">{{ formatDate(donation.addedAt) }}</span>
-            </div>
-            <div class="dashboard-card__detail">
-              <span class="dashboard-card__detail-label">Copies:</span>
-              <span class="dashboard-card__detail-value">{{ donation.copies }}</span>
-            </div>
-            <div class="dashboard-card__detail">
-              <span class="dashboard-card__detail-label">Condition:</span>
-              <span class="dashboard-card__detail-value">{{ donation.condition }}</span>
-            </div>
-          </div>
-          <div class="dashboard-card__actions">
-            <button v-if="donation.status === 'available'" class="dashboard-card__button dashboard-card__button--edit">
-              Edit
-            </button>
-            <button v-if="donation.status === 'requested'"
-              class="dashboard-card__button dashboard-card__button--primary">
-              View Requests
-            </button>
-          </div>
-        </li>
-      </ul>
     </div>
   </div>
 </template>
@@ -188,6 +195,10 @@ export default {
   },
 
   methods: {
+    close() {
+      this.$emit('close');
+    },
+
     async loadUserData() {
       if (!this.currentUser) return;
 
@@ -316,10 +327,54 @@ export default {
 
 <style scoped>
 .dashboard {
+  position: fixed;
+  inset: 0 0 0 0;
   width: 100%;
+  height: 100vh;
+
+  margin: 0;
+  padding: 0;
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-overlay {
+  position: fixed;
+  inset: 0 0 0 0;
+  background-color: var(--clr-overlay);
+  z-index: 90;
+}
+
+.close-dashboard {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 103;
+
+  font-size: 2.4rem;
+  color: var(--text-primary);
+}
+
+.dashboard-content {
+  position: relative;
+  z-index: 100;
+
+  padding: 3rem;
+  width: 95%;
   max-width: 100rem;
-  margin: 0 auto;
-  padding: 1.6rem;
+  min-height: 80vh;
+  overflow: auto;
+
+  background-color: var(--bg-tertiary);
+  border-radius: 0.8rem;
+
 }
 
 .dashboard__title {
