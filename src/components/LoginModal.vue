@@ -189,18 +189,18 @@ export default {
 .modal-header h2 {
   margin: 0;
   font-size: 2.5rem;
-  color: white;
+  color: var(--text-primary);
 }
 
 .close-button {
   background: none;
   border: none;
   font-size: 2.4rem;
-  color: #aaa;
+  color: var(--text-secondary);
   cursor: pointer;
 
   &:hover {
-    color: white;
+    color: var(--text-primary);
   }
 }
 
@@ -223,7 +223,7 @@ export default {
 label {
   display: block;
   margin-bottom: 8px;
-  color: #ddd;
+  color: var(--text-primary);
 }
 
 input {
@@ -232,7 +232,7 @@ input {
   border: 1px solid #444;
   border-radius: 0.4rem;
   background-color: #333;
-  color: white;
+  color: var(--text-primary);
 }
 
 .form-actions {
@@ -264,7 +264,7 @@ button:disabled {
 }
 
 .google-button {
-  background-color: white;
+  background-color: var(--text-primary);
   color: #333;
 
   &:hover:not(:disabled) {
@@ -275,7 +275,7 @@ button:disabled {
 .toggle-mode {
   margin-top: 2rem;
   text-align: center;
-  color: #bbb;
+  color: var(--text-secondary);
 
   & a {
     color: #3498db;
