@@ -657,7 +657,7 @@ section {
   align-items: center;
   justify-content: center;
 
-  color: white;
+  color: var(--text-primary);
 
   min-height: 15rem;
   padding: 2rem;
@@ -668,11 +668,11 @@ section {
 }
 
 .book-title {
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .book-author {
-  color: #bbb;
+  color: var(--text-secondary);
   font-style: italic;
 }
 
@@ -729,9 +729,7 @@ section {
 .feature {
   flex-grow: 1;
   flex-basis: 0;
-  background-color: var(--bg-secondary);
   padding: 1rem;
-  border-radius: 8px;
   text-align: center;
 }
 
@@ -763,7 +761,6 @@ section {
 .footer-logo {
   width: 3rem;
   height: 3rem;
-  margin-right: 1rem;
 }
 
 .footer-name {
