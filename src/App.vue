@@ -13,12 +13,10 @@
         <p class="header-heading">BookBuddy</p>
       </div>
 
-      <div class="user-account">
-        <div v-if="currentUser" class="user-info">
-          <span class="user-name">{{ getUserDisplayName }}</span>
-          <button class="dashboard-button" @click="openDashboard">Dashboard</button>
-          <button class="logout-button" @click="logout">Logout</button>
-        </div>
+      <div class="flex-row gap-1 align-center">
+        <span class="user-name" v-if="currentUser">{{ getUserDisplayName }}</span>
+        <button class="header-button" v-if="currentUser" @click="openDashboard">Dashboard</button>
+        <button class="header-button" v-if="currentUser" @click="logout">Logout</button>
         <button v-else class="login-button" @click="showLoginModal = true">Login</button>
       </div>
     </header>
@@ -377,6 +375,11 @@ option {
   text-align: right;
 }
 
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
 .flex-col {
   display: flex;
   flex-direction: column;
@@ -400,34 +403,6 @@ option {
 
 .clr-yellow-1 {
   color: var(--clr-yellow-1);
-}
-
-
-/* Login Modal */
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.user-name {
-  color: white;
-  font-weight: 500;
-}
-
-.logout-button {
-  background-color: transparent;
-  border: 0.1rem solid #e74c3c;
-  color: var(--clr-yellow-1);
-  padding: 0.5rem 1rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    background-color: var(--clr-yellow-2);
-    color: white;
-  }
 }
 
 
@@ -457,7 +432,7 @@ option {
 
 .logo {
   width: 4rem;
-  height: 4rem;
+  aspect-ratio: 1;
 }
 
 .header-heading {
@@ -465,12 +440,6 @@ option {
   font-weight: 700;
   text-align: center;
   color: var(--clr-yellow-1);
-}
-
-.user-account {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
 }
 
 .login-button {
@@ -485,28 +454,33 @@ option {
   border: none;
   border-radius: 4px;
 
-  transition: background-color 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
-    background-color: var(--clr-yellow-2);
-    box-shadow: 0 5px 0 hsla(0, 83%, 37%, 0.212);
-    transform: translateY(-2px);
-    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+    box-shadow: 0 0 1rem hsla(110, 100%, 82%, 0.5);
+    transform: scale(1.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 }
 
-.dashboard-button {
-  background-color: var(--clr-yellow-1);
-  color: var(--bg-secondary);
-  border: none;
+.user-name {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.header-button {
+  background-color: transparent;
+  border: 0.1rem solid var(--clr-yellow-1);
+  color: var(--clr-yellow-1);
   padding: 0.5rem 1rem;
   margin-right: 1rem;
   border-radius: 0.4rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease, color 0.2s;
 
   &:hover {
-    background-color: var(--clr-yellow-2);
+    background-color: var(--clr-yellow-1);
+    color: var(--bg-secondary);
   }
 }
 
