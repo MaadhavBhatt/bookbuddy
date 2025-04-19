@@ -6,13 +6,11 @@ const { collection, getDocs, query, where } = firestoreLib;
 const bookService = {
   async getAllBooks() {
     try {
-      console.log('BookService: Getting all books');
       const querySnapshot = await getDocs(collection(db, 'books'));
       const books = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      console.log(`BookService: Found ${books.length} books`);
       return books;
     } catch (error) {
       console.error('Error getting books:', error);
@@ -21,8 +19,6 @@ const bookService = {
   },
 
   async searchBooks(searchQuery) {
-    console.log(`BookService: Searching for "${searchQuery}"`);
-
     if (!searchQuery || searchQuery.trim() === '') {
       return this.getAllBooks();
     }
@@ -40,7 +36,6 @@ const bookService = {
             book.description.toLowerCase().includes(searchTerm))
       );
 
-      console.log(`Found ${filteredBooks.length} matches for "${searchTerm}"`);
       return filteredBooks;
     } catch (error) {
       console.error('Error searching books:', error);
