@@ -6,6 +6,10 @@ A matchmaking site connecting book donors and seekers.
 
 BookBuddy helps schools create their own book exchange platform where students can donate books they no longer need and find books they want to read.
 
+## Link to Hack Club and Journey
+
+This was initially a random idea I started developing, thanks to the pile of books I made a standing desk out of. At Hack Club, I'm continuing to work on it as part of my [Journey](https://journey.hackclub.com) project. Here's the Journey project page for BookBuddy: [BookBuddy Journey](https://journey.hackclub.com/bookbuddy).
+
 ## Project setup
 
 ```
