@@ -8,7 +8,7 @@ BookBuddy helps schools create their own book exchange platform where students c
 
 ## Link to Hack Club and Journey
 
-This was initially a random idea I started developing, thanks to the pile of books I made a standing desk out of. At Hack Club, I'm continuing to work on it as part of my [Journey](https://journey.hackclub.com) project. Here's the Journey project page for BookBuddy: [BookBuddy Journey](https://journey.hackclub.com/bookbuddy).
+This was initially a random idea I started developing, thanks to the pile of books I made a standing desk out of. At Hack Club, I'm continuing to work on it as part of my [Journey](https://journey.hackclub.com) project. Here's the Journey project page for BookBuddy: [BookBuddy Journey](https://journey.hackclub.com/projects/144).
 
 ## Project setup
 
