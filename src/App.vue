@@ -7,6 +7,8 @@
 
     <user-dashboard v-if="showDashboard && currentUser" :currentUser="currentUser" @close="showDashboard = false" />
 
+    <book-modal v-if="showBookModal" :bookData="bookData" @close="showBookModal = false" />
+
     <header class="header">
       <div class="header-info">
         <img alt="BookBuddy logo" src="./assets/logo.png" class="logo" />
@@ -21,7 +23,7 @@
       </div>
     </header>
 
-    <div class="search-overlay" v-if="searchFocused" @click="unfocusSearch"></div>
+    <div class="overlay" v-if="searchFocused" @click="unfocusSearch"></div>
 
     <main>
       <section class="search" :class="{ 'search-focused': searchFocused }">
@@ -41,7 +43,7 @@
           </div>
 
           <div v-else class="results-grid">
-            <div v-for="book in searchResults" :key="book.id" class="book-card">
+            <div v-for="book in searchResults" :key="book.id" @click="handleBookClick(book)" class="book-card">
               <div class="book-cover" :style="getBookCoverStyle(book)"></div>
               <div class="book-info flex-col gap-half">
                 <h3 class="book-title">{{ book.title }}</h3>
@@ -113,13 +115,15 @@ import DonateModal from '@/components/DonateModal.vue';
 import LoginModal from '@/components/LoginModal.vue';
 import authService from '@/services/authService';
 import bookService from '@/services/bookService';
+import BookModal from '@/components/BookModal.vue';
 
 export default {
   name: 'App',
   components: {
     LoginModal,
     DonateModal,
-    UserDashboard
+    UserDashboard,
+    BookModal,
   },
   data() {
     return {
@@ -132,6 +136,8 @@ export default {
       currentUser: null,
       showDonateModal: false,
       showDashboard: false,
+      showBookModal: false,
+      bookData: null,
     };
   },
 
@@ -303,6 +309,17 @@ export default {
       } else {
         this.showDashboard = true;
       }
+    },
+
+    handleBookClick(book) {
+      console.log('Book clicked:', {
+        title: book.title,
+        author: book.author,
+        status: book.status,
+        description: book.description
+      });
+      this.bookData = book;
+      this.showBookModal = true;
     }
   }
 };
@@ -516,7 +533,7 @@ section {
   transform-origin: center center;
 }
 
-.search-overlay {
+.overlay {
   position: fixed;
   inset: 0 0 0 0;
   background-color: var(--clr-overlay);
@@ -575,6 +592,7 @@ section {
 
 /* From https: //css-loaders.com/dots/#l40 */
 .loader {
+  margin: 0 auto;
   height: 15px;
   aspect-ratio: 5;
   --_g: no-repeat radial-gradient(farthest-side, var(--clr-yellow-1) 94%, transparent);
@@ -641,6 +659,7 @@ section {
   transition: transform 0.2s;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-5px);
@@ -673,7 +692,6 @@ section {
 
 .book-author {
   color: var(--text-secondary);
-  font-style: italic;
 }
 
 .book-status {
