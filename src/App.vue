@@ -180,6 +180,9 @@ export default {
         event.preventDefault();
         this.$refs.searchInput.focus();
       }
+      else if (event.key === 'Escape') {
+        this.unfocusSearch();
+      }
     });
   },
 
