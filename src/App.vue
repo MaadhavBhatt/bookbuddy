@@ -280,14 +280,17 @@ export default {
 
     openDonateModal() {
       if (!this.currentUser) {
-        // Prompt login first if not logged in
         this.showLoginModal = true;
-        // Store intent to open donate modal after login
-        this.$once('auth-success', () => {
-          this.showDonateModal = true;
-        });
+        const unwatch = this.$watch(
+          () => this.currentUser,
+          (newUser) => {
+            if (newUser) {
+              this.showDonateModal = true;
+              unwatch(); // Remove the watcher after it fires once
+            }
+          }
+        );
       } else {
-        // User is logged in, show donate modal directly
         this.showDonateModal = true;
       }
     },
