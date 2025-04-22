@@ -1,4 +1,7 @@
 <template>
+  <WarningModal :isVisible="this.showWarning" :warningMessage="this.warningMessage" :confirmText="confirmText"
+    :cancelText="this.cancelText" @confirm="requestBook" @cancel="showWarning = false" />
+
   <div class="overlay" @click="close"></div>
 
   <div class="book-modal">
@@ -25,7 +28,7 @@
           </div>
 
           <div class="book-actions">
-            <button class="action-button request-button" v-if="bookData.status === 'available'">
+            <button class="action-button request-button" v-if="bookData.status === 'available'" @click="requestBook">
               Request Book
             </button>
             <button class="action-button save-button">
@@ -80,25 +83,38 @@
 </template>
 
 <script>
+import WarningModal from './WarningModal.vue';
+
 export default {
   name: 'BookModal',
+  components: {
+    WarningModal,
+  },
+
   data() {
     return {
       isLoading: false,
+      showWarning: false,
+      warningMessage: 'Are you sure you want to request this book?',
+      confirmText: 'Yes',
+      cancelText: 'No',
     }
   },
+
   props: {
     bookData: {
       type: Object,
       required: true,
     }
   },
+
   mounted() {
     this.isLoading = true;
     setTimeout(() => {
       this.isLoading = false;
     }, 1000); // Simulate loading time
   },
+
   methods: {
     close() {
       this.$emit('close');
@@ -134,6 +150,10 @@ export default {
         'requested': 'Requested'
       };
       return statusMap[status] || status;
+    },
+
+    requestBook() {
+      this.showWarning = true;
     }
   }
 }
