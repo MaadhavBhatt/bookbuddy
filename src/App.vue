@@ -34,7 +34,7 @@
         </div>
       </section>
 
-      <section class="search-results" v-if="searchQuery.trim()">
+      <section class="search-results" v-if="searchQuery.trim() && this.searchFocused">
         <div class="container flex-col gap-2 align-center">
           <div v-if="isSearching" class="loader"></div>
 
