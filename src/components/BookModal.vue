@@ -113,6 +113,12 @@ export default {
     setTimeout(() => {
       this.isLoading = false;
     }, 1000); // Simulate loading time
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !this.showWarning) {
+        this.close();
+      }
+    });
   },
 
   methods: {

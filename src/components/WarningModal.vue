@@ -35,6 +35,15 @@ export default {
       type: String,
       default: 'Cancel'
     }
+  },
+
+  mounted() {
+    // I tried using keydown here, but then both modals close simultaneously. I think keyup does the job because once the key is released, the keydown event in BookModal cannot be triggered, which is exactly what we want.
+    window.addEventListener('keyup', (event) => {
+      if (event.key == 'Escape') {
+        this.$emit('cancel');
+      }
+    })
   }
 }
 </script>
