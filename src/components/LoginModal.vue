@@ -80,6 +80,14 @@ export default {
     };
   },
 
+  mounted() {
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        this.close();
+      }
+    });
+  },
+
   methods: {
     close() {
       this.$emit('close');
