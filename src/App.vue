@@ -1,13 +1,29 @@
 <template>
   <div id="app" class="dark-mode">
-    <login-modal :show="showLoginModal" @close="showLoginModal = false" @auth-success="handleAuthSuccess" />
+    <login-modal
+      :show="showLoginModal"
+      @close="showLoginModal = false"
+      @auth-success="handleAuthSuccess"
+    />
 
-    <donate-modal :show="showDonateModal" @close="showDonateModal = false" @donate-success="handleDonateSuccess"
-      :currentUser="currentUser" />
+    <donate-modal
+      :show="showDonateModal"
+      @close="showDonateModal = false"
+      @donate-success="handleDonateSuccess"
+      :currentUser="currentUser"
+    />
 
-    <user-dashboard v-if="showDashboard && currentUser" :currentUser="currentUser" @close="showDashboard = false" />
+    <user-dashboard
+      v-if="showDashboard && currentUser"
+      :currentUser="currentUser"
+      @close="showDashboard = false"
+    />
 
-    <book-modal v-if="showBookModal" :bookData="bookData" @close="showBookModal = false" />
+    <book-modal
+      v-if="showBookModal"
+      :bookData="bookData"
+      @close="showBookModal = false"
+    />
 
     <header class="header">
       <div class="header-info">
@@ -16,10 +32,18 @@
       </div>
 
       <div class="flex-row gap-1 align-center">
-        <span class="user-name" v-if="currentUser">{{ getUserDisplayName }}</span>
-        <button class="header-button" v-if="currentUser" @click="openDashboard">Dashboard</button>
-        <button class="header-button" v-if="currentUser" @click="logout">Logout</button>
-        <button v-else class="login-button" @click="showLoginModal = true">Login</button>
+        <span class="user-name" v-if="currentUser">{{
+          getUserDisplayName
+        }}</span>
+        <button class="header-button" v-if="currentUser" @click="openDashboard">
+          Dashboard
+        </button>
+        <button class="header-button" v-if="currentUser" @click="logout">
+          Logout
+        </button>
+        <button v-else class="login-button" @click="showLoginModal = true">
+          Login
+        </button>
       </div>
     </header>
 
@@ -28,13 +52,23 @@
     <main>
       <section class="search" :class="{ 'search-focused': searchFocused }">
         <div class="container search-container">
-          <input type="text" placeholder="Search books (Ctrl+P)..." class="search-input" @focus="searchFocused = true"
-            @blur="searchFocused = false" v-model="searchQuery" ref="searchInput" />
+          <input
+            type="text"
+            placeholder="Search books (Ctrl+P)..."
+            class="search-input"
+            @focus="searchFocused = true"
+            @blur="searchFocused = false"
+            v-model="searchQuery"
+            ref="searchInput"
+          />
           <button class="cta-button donate" @click="openDonateModal">+</button>
         </div>
       </section>
 
-      <section class="search-results" v-if="searchQuery.trim() && this.searchFocused">
+      <section
+        class="search-results"
+        v-if="searchQuery.trim() && this.searchFocused"
+      >
         <div class="container flex-col gap-2 align-center">
           <div v-if="isSearching" class="loader"></div>
 
@@ -43,7 +77,12 @@
           </div>
 
           <div v-else class="results-grid">
-            <div v-for="book in searchResults" :key="book.id" @click="handleBookClick(book)" class="book-card">
+            <div
+              v-for="book in searchResults"
+              :key="book.id"
+              @click="handleBookClick(book)"
+              class="book-card"
+            >
               <div class="book-cover" :style="getBookCoverStyle(book)"></div>
               <div class="book-info flex-col gap-half">
                 <h3 class="book-title">{{ book.title }}</h3>
@@ -90,13 +129,22 @@
     <footer class="footer">
       <div class="container">
         <div class="footer-left">
-          <img alt="BookBuddy logo" src="./assets/logo.png" class="footer-logo" />
+          <img
+            alt="BookBuddy logo"
+            src="./assets/logo.png"
+            class="footer-logo"
+          />
           <span class="footer-name">BookBuddy</span>
         </div>
 
         <div class="footer-right">
           <a href="#" class="social-link ta-right">Instagram</a>
-          <a href="https://github.com/MaadhavBhatt/bookbuddy" class="social-link ta-left" target="_blank">GitHub</a>
+          <a
+            href="https://github.com/MaadhavBhatt/bookbuddy"
+            class="social-link ta-left"
+            target="_blank"
+            >GitHub</a
+          >
         </div>
 
         <div class="footer-right">
@@ -144,8 +192,12 @@ export default {
   computed: {
     getUserDisplayName() {
       if (!this.currentUser) return '';
-      return this.currentUser.displayName || this.currentUser.email.split('@')[0] || 'User';
-    }
+      return (
+        this.currentUser.displayName ||
+        this.currentUser.email.split('@')[0] ||
+        'User'
+      );
+    },
   },
 
   created() {
@@ -170,7 +222,7 @@ export default {
         this.searchResults = [];
         this.isSearching = false;
       }
-    }
+    },
   },
 
   mounted() {
@@ -179,8 +231,7 @@ export default {
       if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
         event.preventDefault();
         this.$refs.searchInput.focus();
-      }
-      else if (event.key === 'Escape') {
+      } else if (event.key === 'Escape') {
         this.unfocusSearch();
       }
     });
@@ -210,9 +261,9 @@ export default {
 
     getStatusText(status) {
       const statusMap = {
-        'available': 'Available',
-        'checked_out': 'Checked Out',
-        'reserved': 'Reserved'
+        available: 'Available',
+        checked_out: 'Checked Out',
+        reserved: 'Reserved',
       };
       return statusMap[status] || 'Unknown';
     },
@@ -229,14 +280,20 @@ export default {
         return {
           backgroundImage: `url(${book.coverImage})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center',
         };
       }
 
       // Generate a color based on the book title for books without covers
       const colors = [
-        '#3498db', '#2ecc71', '#e74c3c', '#f39c12',
-        '#9b59b6', '#1abc9c', '#d35400', '#34495e'
+        '#3498db',
+        '#2ecc71',
+        '#e74c3c',
+        '#f39c12',
+        '#9b59b6',
+        '#1abc9c',
+        '#d35400',
+        '#34495e',
       ];
 
       const index = book.title
@@ -322,19 +379,18 @@ export default {
         title: book.title,
         author: book.author,
         status: book.status,
-        description: book.description
+        description: book.description,
       });
       this.bookData = book;
       this.showBookModal = true;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style>
 @import url(styles/variables.css);
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
-
 
 /* Resets */
 * {
@@ -382,7 +438,6 @@ option {
   flex-direction: column;
 }
 
-
 /* Utility CLasses */
 .container {
   width: min(80%, 100rem);
@@ -428,7 +483,6 @@ option {
   color: var(--clr-yellow-1);
 }
 
-
 /* Header */
 .header {
   display: flex;
@@ -441,7 +495,6 @@ option {
   padding: 3rem 0;
   width: min(80%, 100rem);
   margin: 0 auto;
-
 
   background-color: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
@@ -507,7 +560,6 @@ option {
   }
 }
 
-
 /* Main content */
 main {
   flex: 1;
@@ -516,7 +568,6 @@ main {
 section {
   padding: 2rem 0;
 }
-
 
 /* Search */
 .search {
@@ -588,7 +639,6 @@ section {
   }
 }
 
-
 /* Search Results */
 .search-results {
   position: relative;
@@ -601,14 +651,14 @@ section {
   margin: 0 auto;
   height: 15px;
   aspect-ratio: 5;
-  --_g: no-repeat radial-gradient(farthest-side, var(--clr-yellow-1) 94%, transparent);
+  --_g: no-repeat
+    radial-gradient(farthest-side, var(--clr-yellow-1) 94%, transparent);
   background: var(--_g), var(--_g), var(--_g), var(--_g);
   background-size: 20% 100%;
   animation: l40-1 0.75s infinite alternate, l40-2 1.5s infinite alternate;
 }
 
 @keyframes l40-1 {
-
   0%,
   10% {
     background-position: 0 0, 0 0, 0 0, 0 0;
@@ -631,7 +681,6 @@ section {
 }
 
 @keyframes l40-2 {
-
   0%,
   49.99% {
     transform: scale(1);
@@ -654,7 +703,6 @@ section {
   grid-template-columns: 1fr;
   gap: 2rem;
 }
-
 
 /* Book Card */
 .book-card {
@@ -725,7 +773,6 @@ section {
   line-height: 1.4;
 }
 
-
 /* Hero */
 .hero {
   text-align: center;
@@ -756,7 +803,6 @@ section {
   padding: 1rem;
   text-align: center;
 }
-
 
 /* Footer */
 .footer {
@@ -807,7 +853,6 @@ section {
   font-size: 0.9rem;
 }
 
-
 /* Keyframes */
 @keyframes fade-in {
   0% {
@@ -818,7 +863,6 @@ section {
     opacity: 1;
   }
 }
-
 
 /* Media queries */
 @media (min-width: 375px) {

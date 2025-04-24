@@ -15,18 +15,35 @@
         <form @submit.prevent="handleSubmit">
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" v-model="email" required placeholder="your@email.com">
+            <input
+              type="email"
+              id="email"
+              v-model="email"
+              required
+              placeholder="your@email.com"
+            />
           </div>
 
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" v-model="password" required placeholder="Your password">
+            <input
+              type="password"
+              id="password"
+              v-model="password"
+              required
+              placeholder="Your password"
+            />
           </div>
 
           <div v-if="isSignUp" class="form-group">
             <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword" v-model="confirmPassword" required
-              placeholder="Confirm your password">
+            <input
+              type="password"
+              id="confirmPassword"
+              v-model="confirmPassword"
+              required
+              placeholder="Confirm your password"
+            />
           </div>
 
           <div class="form-actions">
@@ -34,7 +51,12 @@
               {{ isSignUp ? 'Sign Up' : 'Sign In' }}
             </button>
 
-            <button type="button" class="google-button" @click="signInWithGoogle" :disabled="isLoading">
+            <button
+              type="button"
+              class="google-button"
+              @click="signInWithGoogle"
+              :disabled="isLoading"
+            >
               Sign in with Google
             </button>
           </div>
@@ -64,8 +86,8 @@ export default {
   props: {
     show: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
 
   data() {
@@ -76,7 +98,7 @@ export default {
       confirmPassword: '',
       error: false,
       errorMessage: '',
-      isLoading: false
+      isLoading: false,
     };
   },
 
@@ -114,7 +136,6 @@ export default {
         // Close modal and notify parent
         this.close();
         this.$emit('auth-success');
-
       } catch (error) {
         this.error = true;
 
@@ -128,7 +149,6 @@ export default {
         } else {
           this.errorMessage = error.message;
         }
-
       } finally {
         this.isLoading = false;
       }
@@ -148,8 +168,8 @@ export default {
       } finally {
         this.isLoading = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

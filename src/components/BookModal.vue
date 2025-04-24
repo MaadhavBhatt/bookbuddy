@@ -1,6 +1,12 @@
 <template>
-  <WarningModal :isVisible="this.showWarning" :warningMessage="this.warningMessage" :confirmText="confirmText"
-    :cancelText="this.cancelText" @confirm="requestBook" @cancel="showWarning = false" />
+  <WarningModal
+    :isVisible="this.showWarning"
+    :warningMessage="this.warningMessage"
+    :confirmText="confirmText"
+    :cancelText="this.cancelText"
+    @confirm="requestBook"
+    @cancel="showWarning = false"
+  />
 
   <div class="overlay" @click="close"></div>
 
@@ -10,7 +16,11 @@
     <div class="book-modal-content flex-col gap-2" v-if="!isLoading">
       <div class="book-modal-header flex-col gap-2">
         <div class="book-cover" :style="getBookCoverStyle()">
-          <img v-if="bookData.coverUrl" :src="bookData.coverUrl" :alt="bookData.title">
+          <img
+            v-if="bookData.coverUrl"
+            :src="bookData.coverUrl"
+            :alt="bookData.title"
+          />
           <div v-else class="book-cover-placeholder">
             <span>{{ bookData.title.substring(0, 1) }}</span>
           </div>
@@ -24,11 +34,18 @@
             <span class="book-status" :class="getStatusClass()">
               {{ getStatusText(bookData.status) }}
             </span>
-            <span class="book-copies">{{ bookData.copies || 1 }} {{ bookData.copies > 1 ? 'copies' : 'copy' }}</span>
+            <span class="book-copies"
+              >{{ bookData.copies || 1 }}
+              {{ bookData.copies > 1 ? 'copies' : 'copy' }}</span
+            >
           </div>
 
           <div class="book-actions">
-            <button class="action-button request-button" v-if="bookData.status === 'available'" @click="requestBook">
+            <button
+              class="action-button request-button"
+              v-if="bookData.status === 'available'"
+              @click="requestBook"
+            >
               Request Book
             </button>
             <button class="action-button save-button">
@@ -68,8 +85,12 @@
         <div class="donor">
           <div class="donor-avatar">{{ bookData.donorName?.[0] || '?' }}</div>
           <div class="donor-details">
-            <span class="donor-name">{{ bookData.donorName || 'Anonymous' }}</span>
-            <span class="donor-location" v-if="bookData.location">{{ bookData.location }}</span>
+            <span class="donor-name">{{
+              bookData.donorName || 'Anonymous'
+            }}</span>
+            <span class="donor-location" v-if="bookData.location">{{
+              bookData.location
+            }}</span>
           </div>
         </div>
       </div>
@@ -98,14 +119,14 @@ export default {
       warningMessage: 'Are you sure you want to request this book?',
       confirmText: 'Yes',
       cancelText: 'No',
-    }
+    };
   },
 
   props: {
     bookData: {
       type: Object,
       required: true,
-    }
+    },
   },
 
   mounted() {
@@ -129,40 +150,42 @@ export default {
     getBookCoverStyle() {
       // Generate a consistent color based on the book title
       const colors = ['#f9c80e', '#ff6b6b', '#4ecdc4', '#45b7d1', '#8675a9'];
-      const index = Math.abs(this.bookData.title.split('').reduce((acc, char) => {
-        return acc + char.charCodeAt(0);
-      }, 0) % colors.length);
+      const index = Math.abs(
+        this.bookData.title.split('').reduce((acc, char) => {
+          return acc + char.charCodeAt(0);
+        }, 0) % colors.length
+      );
 
       return {
-        backgroundColor: colors[index]
+        backgroundColor: colors[index],
       };
     },
 
     getStatusClass() {
       const statusMap = {
-        'available': 'status available',
-        'checked_out': 'status unavailable',
-        'reserved': 'status pending',
-        'requested': 'status pending'
+        available: 'status available',
+        checked_out: 'status unavailable',
+        reserved: 'status pending',
+        requested: 'status pending',
       };
       return statusMap[this.bookData.status] || 'status-unknown';
     },
 
     getStatusText(status) {
       const statusMap = {
-        'available': 'Available',
-        'checked_out': 'Checked Out',
-        'reserved': 'Reserved',
-        'requested': 'Requested'
+        available: 'Available',
+        checked_out: 'Checked Out',
+        reserved: 'Reserved',
+        requested: 'Requested',
       };
       return statusMap[status] || status;
     },
 
     requestBook() {
       this.showWarning = true;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
