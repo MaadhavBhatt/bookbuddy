@@ -7,12 +7,22 @@
       <div class="dashboard__header">
         <h2 class="dashboard__title">My Dashboard</h2>
         <div class="dashboard__tabs">
-          <button class="dashboard__tab-button" :class="{ 'dashboard__tab-button--active': activeTab === 'requests' }"
-            @click="activeTab = 'requests'">
+          <button
+            class="dashboard__tab-button"
+            :class="{
+              'dashboard__tab-button--active': activeTab === 'requests',
+            }"
+            @click="activeTab = 'requests'"
+          >
             My Requests
           </button>
-          <button class="dashboard__tab-button" :class="{ 'dashboard__tab-button--active': activeTab === 'donations' }"
-            @click="activeTab = 'donations'">
+          <button
+            class="dashboard__tab-button"
+            :class="{
+              'dashboard__tab-button--active': activeTab === 'donations',
+            }"
+            @click="activeTab = 'donations'"
+          >
             My Donations
           </button>
         </div>
@@ -37,14 +47,27 @@
         </div>
 
         <ul v-else class="dashboard__list">
-          <li v-for="request in filteredRequests" :key="request.id" class="dashboard-card">
+          <li
+            v-for="request in filteredRequests"
+            :key="request.id"
+            class="dashboard-card"
+          >
             <div class="dashboard-card__header">
-              <div class="dashboard-card__image"
-                :style="request.bookCover ? `background-image: url(${request.bookCover})` : ''"></div>
+              <div
+                class="dashboard-card__image"
+                :style="
+                  request.bookCover
+                    ? `background-image: url(${request.bookCover})`
+                    : ''
+                "
+              ></div>
               <div class="dashboard-card__info">
                 <h3 class="dashboard-card__title">{{ request.bookTitle }}</h3>
                 <p class="dashboard-card__author">{{ request.bookAuthor }}</p>
-                <span class="dashboard-card__status" :class="`dashboard-card__status--${request.status}`">
+                <span
+                  class="dashboard-card__status"
+                  :class="`dashboard-card__status--${request.status}`"
+                >
                   {{ getStatusLabel(request.status) }}
                 </span>
               </div>
@@ -52,24 +75,36 @@
             <div class="dashboard-card__details">
               <div class="dashboard-card__detail">
                 <span class="dashboard-card__detail-label">Requested:</span>
-                <span class="dashboard-card__detail-value">{{ formatDate(request.requestDate) }}</span>
+                <span class="dashboard-card__detail-value">{{
+                  formatDate(request.requestDate)
+                }}</span>
               </div>
               <div class="dashboard-card__detail">
                 <span class="dashboard-card__detail-label">Quantity:</span>
-                <span class="dashboard-card__detail-value">{{ request.quantity }}</span>
+                <span class="dashboard-card__detail-value">{{
+                  request.quantity
+                }}</span>
               </div>
             </div>
             <div class="dashboard-card__actions">
-              <button v-if="request.status === 'pending'" class="dashboard-card__button dashboard-card__button--cancel"
-                @click="cancelRequest(request)">
+              <button
+                v-if="request.status === 'pending'"
+                class="dashboard-card__button dashboard-card__button--cancel"
+                @click="cancelRequest(request)"
+              >
                 Cancel
               </button>
-              <button v-if="request.status === 'approved'"
-                class="dashboard-card__button dashboard-card__button--primary">
+              <button
+                v-if="request.status === 'approved'"
+                class="dashboard-card__button dashboard-card__button--primary"
+              >
                 Contact Donor
               </button>
-              <button v-if="request.status === 'ready'" class="dashboard-card__button dashboard-card__button--success"
-                @click="markReceived(request)">
+              <button
+                v-if="request.status === 'ready'"
+                class="dashboard-card__button dashboard-card__button--success"
+                @click="markReceived(request)"
+              >
                 Mark Received
               </button>
             </div>
@@ -91,19 +126,35 @@
           <p class="dashboard__loading-text">Loading...</p>
         </div>
 
-        <div v-else-if="filteredDonations.length === 0" class="dashboard__empty">
+        <div
+          v-else-if="filteredDonations.length === 0"
+          class="dashboard__empty"
+        >
           <p class="dashboard__empty-text">No donations found</p>
         </div>
 
         <ul v-else class="dashboard__list">
-          <li v-for="donation in filteredDonations" :key="donation.id" class="dashboard-card">
+          <li
+            v-for="donation in filteredDonations"
+            :key="donation.id"
+            class="dashboard-card"
+          >
             <div class="dashboard-card__header">
-              <div class="dashboard-card__image"
-                :style="donation.coverImage ? `background-image: url(${donation.coverImage})` : ''"></div>
+              <div
+                class="dashboard-card__image"
+                :style="
+                  donation.coverImage
+                    ? `background-image: url(${donation.coverImage})`
+                    : ''
+                "
+              ></div>
               <div class="dashboard-card__info">
                 <h3 class="dashboard-card__title">{{ donation.title }}</h3>
                 <p class="dashboard-card__author">{{ donation.author }}</p>
-                <span class="dashboard-card__status" :class="`dashboard-card__status--${donation.status}`">
+                <span
+                  class="dashboard-card__status"
+                  :class="`dashboard-card__status--${donation.status}`"
+                >
                   {{ getStatusLabel(donation.status) }}
                 </span>
               </div>
@@ -111,24 +162,34 @@
             <div class="dashboard-card__details">
               <div class="dashboard-card__detail">
                 <span class="dashboard-card__detail-label">Donated:</span>
-                <span class="dashboard-card__detail-value">{{ formatDate(donation.addedAt) }}</span>
+                <span class="dashboard-card__detail-value">{{
+                  formatDate(donation.addedAt)
+                }}</span>
               </div>
               <div class="dashboard-card__detail">
                 <span class="dashboard-card__detail-label">Copies:</span>
-                <span class="dashboard-card__detail-value">{{ donation.copies }}</span>
+                <span class="dashboard-card__detail-value">{{
+                  donation.copies
+                }}</span>
               </div>
               <div class="dashboard-card__detail">
                 <span class="dashboard-card__detail-label">Condition:</span>
-                <span class="dashboard-card__detail-value">{{ donation.condition }}</span>
+                <span class="dashboard-card__detail-value">{{
+                  donation.condition
+                }}</span>
               </div>
             </div>
             <div class="dashboard-card__actions">
-              <button v-if="donation.status === 'available'"
-                class="dashboard-card__button dashboard-card__button--edit">
+              <button
+                v-if="donation.status === 'available'"
+                class="dashboard-card__button dashboard-card__button--edit"
+              >
                 Edit
               </button>
-              <button v-if="donation.status === 'requested'"
-                class="dashboard-card__button dashboard-card__button--primary">
+              <button
+                v-if="donation.status === 'requested'"
+                class="dashboard-card__button dashboard-card__button--primary"
+              >
                 View Requests
               </button>
             </div>
@@ -149,8 +210,8 @@ export default {
   props: {
     currentUser: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
 
   data() {
@@ -160,7 +221,7 @@ export default {
       requests: [],
       donations: [],
       requestFilter: 'all',
-      donationFilter: 'all'
+      donationFilter: 'all',
     };
   },
 
@@ -169,11 +230,11 @@ export default {
       if (this.requestFilter === 'all') {
         return this.requests;
       } else if (this.requestFilter === 'active') {
-        return this.requests.filter(req =>
+        return this.requests.filter((req) =>
           ['pending', 'approved', 'ready'].includes(req.status)
         );
       } else {
-        return this.requests.filter(req =>
+        return this.requests.filter((req) =>
           ['fulfilled', 'cancelled', 'rejected'].includes(req.status)
         );
       }
@@ -183,11 +244,15 @@ export default {
       if (this.donationFilter === 'all') {
         return this.donations;
       } else if (this.donationFilter === 'available') {
-        return this.donations.filter(donation => donation.status === 'available');
+        return this.donations.filter(
+          (donation) => donation.status === 'available'
+        );
       } else {
-        return this.donations.filter(donation => donation.status !== 'available');
+        return this.donations.filter(
+          (donation) => donation.status !== 'available'
+        );
       }
-    }
+    },
   },
 
   created() {
@@ -213,10 +278,7 @@ export default {
       this.isLoading = true;
 
       try {
-        await Promise.all([
-          this.fetchRequests(),
-          this.fetchDonations()
-        ]);
+        await Promise.all([this.fetchRequests(), this.fetchDonations()]);
       } catch (error) {
         console.error('Error loading user data:', error);
       } finally {
@@ -228,12 +290,15 @@ export default {
       const { collection, query, where, getDocs } = firestoreLib;
 
       const requestsRef = collection(db, 'requests');
-      const q = query(requestsRef, where('requesterId', '==', this.currentUser.uid));
+      const q = query(
+        requestsRef,
+        where('requesterId', '==', this.currentUser.uid)
+      );
       const snapshot = await getDocs(q);
 
-      this.requests = snapshot.docs.map(doc => ({
+      this.requests = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
     },
 
@@ -245,27 +310,28 @@ export default {
       const snapshot = await getDocs(booksRef);
 
       this.donations = snapshot.docs
-        .map(doc => ({
+        .map((doc) => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }))
-        .filter(book =>
-          book.donors &&
-          book.donors.some(donor => donor.email === this.currentUser.email)
+        .filter(
+          (book) =>
+            book.donors &&
+            book.donors.some((donor) => donor.email === this.currentUser.email)
         );
     },
 
     getStatusLabel(status) {
       const statusMap = {
-        'pending': 'Pending',
-        'approved': 'Approved',
-        'ready': 'Ready for Pickup',
-        'fulfilled': 'Received',
-        'cancelled': 'Cancelled',
-        'rejected': 'Declined',
-        'available': 'Available',
-        'requested': 'Requested',
-        'transferred': 'Transferred'
+        pending: 'Pending',
+        approved: 'Approved',
+        ready: 'Ready for Pickup',
+        fulfilled: 'Received',
+        cancelled: 'Cancelled',
+        rejected: 'Declined',
+        available: 'Available',
+        requested: 'Requested',
+        transferred: 'Transferred',
       };
 
       return statusMap[status] || status;
@@ -289,15 +355,14 @@ export default {
 
         await updateDoc(requestRef, {
           status: 'cancelled',
-          cancelledAt: new Date().toISOString()
+          cancelledAt: new Date().toISOString(),
         });
 
         // Update local data
-        const index = this.requests.findIndex(r => r.id === request.id);
+        const index = this.requests.findIndex((r) => r.id === request.id);
         if (index !== -1) {
           this.requests[index].status = 'cancelled';
         }
-
       } catch (error) {
         console.error('Error cancelling request:', error);
         alert('Failed to cancel request');
@@ -315,21 +380,20 @@ export default {
 
         await updateDoc(requestRef, {
           status: 'fulfilled',
-          fulfilledAt: new Date().toISOString()
+          fulfilledAt: new Date().toISOString(),
         });
 
         // Update local data
-        const index = this.requests.findIndex(r => r.id === request.id);
+        const index = this.requests.findIndex((r) => r.id === request.id);
         if (index !== -1) {
           this.requests[index].status = 'fulfilled';
         }
-
       } catch (error) {
         console.error('Error updating request:', error);
         alert('Failed to update request');
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -382,7 +446,6 @@ export default {
 
   background-color: var(--bg-tertiary);
   border-radius: 0.8rem;
-
 }
 
 .dashboard__title {
@@ -477,7 +540,6 @@ export default {
   grid-template-columns: 1fr;
   gap: 1.6rem;
 }
-
 
 /* Donation and Request Card Styles */
 .dashboard-card {
@@ -607,7 +669,6 @@ export default {
   font-size: 1.4rem;
   cursor: pointer;
 }
-
 
 /* Media queries for responsive design */
 @media (min-width: 768px) {

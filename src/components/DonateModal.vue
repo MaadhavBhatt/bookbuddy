@@ -13,14 +13,24 @@
           <div class="form-group">
             <label for="book-title">Search by Book Title</label>
             <div class="search-field">
-              <input type="text" id="book-title" v-model="searchTitle" placeholder="Enter book title..."
-                @input="searchByTitle">
+              <input
+                type="text"
+                id="book-title"
+                v-model="searchTitle"
+                placeholder="Enter book title..."
+                @input="searchByTitle"
+              />
               <div v-if="isSearching" class="spinner"></div>
             </div>
 
             <!-- Title Search Results -->
             <div v-if="titleResults.length > 0" class="search-results">
-              <div v-for="book in titleResults" :key="book.id" class="search-result-item" @click="selectBook(book)">
+              <div
+                v-for="book in titleResults"
+                :key="book.id"
+                class="search-result-item"
+                @click="selectBook(book)"
+              >
                 <div class="result-title">{{ book.title }}</div>
                 <div class="result-author">by {{ book.author }}</div>
               </div>
@@ -30,7 +40,13 @@
           <div class="form-group">
             <label for="book-isbn">Search by ISBN</label>
             <div class="search-field">
-              <input type="text" id="book-isbn" v-model="searchISBN" placeholder="Enter ISBN..." @input="searchByISBN">
+              <input
+                type="text"
+                id="book-isbn"
+                v-model="searchISBN"
+                placeholder="Enter ISBN..."
+                @input="searchByISBN"
+              />
               <div v-if="isSearchingISBN" class="spinner"></div>
             </div>
           </div>
@@ -44,18 +60,35 @@
         <form @submit.prevent="submitDonation">
           <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" v-model="bookData.title" required placeholder="Book title">
+            <input
+              type="text"
+              id="title"
+              v-model="bookData.title"
+              required
+              placeholder="Book title"
+            />
           </div>
 
           <div class="form-group">
             <label for="author">Author</label>
-            <input type="text" id="author" v-model="bookData.author" required placeholder="Book author">
+            <input
+              type="text"
+              id="author"
+              v-model="bookData.author"
+              required
+              placeholder="Book author"
+            />
           </div>
 
           <div class="form-row">
             <div class="form-group half">
               <label for="isbn">ISBN</label>
-              <input type="text" id="isbn" v-model="bookData.isbn" placeholder="ISBN number (optional)">
+              <input
+                type="text"
+                id="isbn"
+                v-model="bookData.isbn"
+                placeholder="ISBN number (optional)"
+              />
             </div>
 
             <div class="form-group half">
@@ -74,31 +107,55 @@
           <div class="form-row">
             <div class="form-group half">
               <label for="genre">Genre</label>
-              <input type="text" id="genre" v-model="bookData.genre" placeholder="Fiction, Science, etc.">
+              <input
+                type="text"
+                id="genre"
+                v-model="bookData.genre"
+                placeholder="Fiction, Science, etc."
+              />
             </div>
 
             <div class="form-group half">
               <label for="publishYear">Publication Year</label>
-              <input type="number" id="publishYear" v-model="bookData.publishYear" placeholder="Year published">
+              <input
+                type="number"
+                id="publishYear"
+                v-model="bookData.publishYear"
+                placeholder="Year published"
+              />
             </div>
           </div>
 
           <div class="form-group">
             <label for="description">Description</label>
-            <textarea id="description" v-model="bookData.description" rows="3"
-              placeholder="Brief description of the book (optional)"></textarea>
+            <textarea
+              id="description"
+              v-model="bookData.description"
+              rows="3"
+              placeholder="Brief description of the book (optional)"
+            ></textarea>
           </div>
 
           <div class="form-group">
             <label for="copies">Number of Copies</label>
-            <input type="number" id="copies" v-model="bookData.copies" min="1" required
-              placeholder="How many copies are you donating?">
+            <input
+              type="number"
+              id="copies"
+              v-model="bookData.copies"
+              min="1"
+              required
+              placeholder="How many copies are you donating?"
+            />
           </div>
 
           <div class="form-group">
             <label for="notes">Additional Notes</label>
-            <textarea id="notes" v-model="bookData.notes" rows="2"
-              placeholder="Any additional information about the donation"></textarea>
+            <textarea
+              id="notes"
+              v-model="bookData.notes"
+              rows="2"
+              placeholder="Any additional information about the donation"
+            ></textarea>
           </div>
 
           <div class="form-actions">
@@ -106,7 +163,11 @@
               Cancel
             </button>
 
-            <button type="submit" class="submit-button" :disabled="isSubmitting">
+            <button
+              type="submit"
+              class="submit-button"
+              :disabled="isSubmitting"
+            >
               {{ isSubmitting ? 'Submitting...' : 'Donate Book' }}
             </button>
           </div>
@@ -127,12 +188,12 @@ export default {
   props: {
     show: {
       type: Boolean,
-      required: true
+      required: true,
     },
     currentUser: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
 
   data() {
@@ -144,7 +205,7 @@ export default {
       isSearchingISBN: false,
       isSubmitting: false,
       bookData: this.getEmptyBookData(),
-      searchTimeout: null
+      searchTimeout: null,
     };
   },
 
@@ -173,7 +234,7 @@ export default {
         condition: '',
         copies: 1,
         notes: '',
-        status: 'available'
+        status: 'available',
       };
     },
 
@@ -203,26 +264,34 @@ export default {
           // Then search Firebase if needed
           let firebaseResults = [];
           if (db) {
-            const { collection, getDocs, query, where, orderBy, limit } = firestoreLib;
+            const { collection, getDocs, query, where, orderBy, limit } =
+              firestoreLib;
             // This is a simplified search. In a real implementation, you'd want
             // to use Firestore's full-text search capabilities or a solution like Algolia
             const booksRef = collection(db, 'books');
             const snapshot = await getDocs(booksRef);
 
             firebaseResults = snapshot.docs
-              .map(doc => ({ id: doc.id, ...doc.data() }))
-              .filter(book =>
-                book.title && book.title.toLowerCase().includes(this.searchTitle.toLowerCase())
+              .map((doc) => ({ id: doc.id, ...doc.data() }))
+              .filter(
+                (book) =>
+                  book.title &&
+                  book.title
+                    .toLowerCase()
+                    .includes(this.searchTitle.toLowerCase())
               );
           }
 
           // Combine results, remove duplicates, and limit to 5
           this.titleResults = [...catalogResults, ...firebaseResults]
-            .filter((book, index, self) =>
-              index === self.findIndex(b => b.isbn === book.isbn || b.title === book.title)
+            .filter(
+              (book, index, self) =>
+                index ===
+                self.findIndex(
+                  (b) => b.isbn === book.isbn || b.title === book.title
+                )
             )
             .slice(0, 5);
-
         } catch (error) {
           console.error('Error searching books:', error);
           this.titleResults = this.searchCatalog(this.searchTitle);
@@ -244,8 +313,10 @@ export default {
       this.searchTimeout = setTimeout(async () => {
         try {
           // Search catalog by ISBN
-          const catalogMatch = catalogData.books.find(book =>
-            book.isbn && book.isbn.replace(/-/g, '') === this.searchISBN.replace(/-/g, '')
+          const catalogMatch = catalogData.books.find(
+            (book) =>
+              book.isbn &&
+              book.isbn.replace(/-/g, '') === this.searchISBN.replace(/-/g, '')
           );
 
           if (catalogMatch) {
@@ -262,7 +333,10 @@ export default {
             const snapshot = await getDocs(q);
 
             if (!snapshot.empty) {
-              const bookData = { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
+              const bookData = {
+                id: snapshot.docs[0].id,
+                ...snapshot.docs[0].data(),
+              };
               this.selectBook(bookData);
             }
           }
@@ -277,8 +351,9 @@ export default {
     searchCatalog(searchText) {
       const lowercaseSearch = searchText.toLowerCase();
       return catalogData.books
-        .filter(book =>
-          book.title && book.title.toLowerCase().includes(lowercaseSearch)
+        .filter(
+          (book) =>
+            book.title && book.title.toLowerCase().includes(lowercaseSearch)
         )
         .slice(0, 5);
     },
@@ -315,7 +390,7 @@ export default {
         const donorInfo = {
           name: this.currentUser.displayName || this.currentUser.email,
           email: this.currentUser.email,
-          donationDate: new Date().toISOString()
+          donationDate: new Date().toISOString(),
         };
 
         // Prepare the book data with donor information
@@ -323,7 +398,7 @@ export default {
           ...this.bookData,
           status: 'available',
           addedAt: new Date().toISOString(),
-          donors: [donorInfo]
+          donors: [donorInfo],
         };
 
         // Add to Firebase
@@ -334,15 +409,14 @@ export default {
 
         // Close modal and reset form
         this.close();
-
       } catch (error) {
         console.error('Error donating book:', error);
         alert('Error donating book: ' + error.message);
       } finally {
         this.isSubmitting = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

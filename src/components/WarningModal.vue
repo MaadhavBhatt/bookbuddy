@@ -21,20 +21,20 @@ export default {
   props: {
     isVisible: {
       type: Boolean,
-      default: false
+      default: false,
     },
     warningMessage: {
       type: String,
-      required: true
+      required: true,
     },
     confirmText: {
       type: String,
-      default: 'Confirm'
+      default: 'Confirm',
     },
     cancelText: {
       type: String,
-      default: 'Cancel'
-    }
+      default: 'Cancel',
+    },
   },
 
   mounted() {
@@ -43,9 +43,9 @@ export default {
       if (event.key == 'Escape') {
         this.$emit('cancel');
       }
-    })
-  }
-}
+    });
+  },
+};
 </script>
 
 <style scoped>
