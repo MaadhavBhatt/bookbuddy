@@ -28,7 +28,7 @@
     <header class="header">
       <div class="header-info">
         <img alt="BookBuddy logo" src="./assets/logo.png" class="logo" />
-        <p class="header-heading">BookBuddy</p>
+        <p class="header-heading"><a href=".">BookBuddy</a></p>
       </div>
 
       <div class="flex-row gap-1 align-center">
@@ -389,7 +389,7 @@ export default {
 </script>
 
 <style>
-@import url(styles/variables.css);
+@import url('./styles/variables.css');
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
 
 /* Resets */
@@ -407,6 +407,12 @@ body {
   color: var(--text-primary);
   margin: 0;
   padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  font-size: inherit;
 }
 
 select {
