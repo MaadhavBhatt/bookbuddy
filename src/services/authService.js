@@ -1,4 +1,13 @@
-// src/services/authService.js
+/**
+ * @fileoverview Authentication Service for BookBuddy
+ *
+ * This service manages user authentication using Firebase Auth,
+ * providing methods for signing in, signing up, and managing the current user state.
+ * It also includes a fallback for development environments where Firebase is not configured.
+ *
+ * @module authService
+ */
+
 import { auth } from '@/firebase';
 import {
   signInWithEmailAndPassword,
@@ -9,11 +18,22 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 
+/**
+ * Authentication service object containing all auth-related functionality
+ */
 const authService = {
-  // Current user state
+  /**
+   * Current user state
+   * @type {Object|null}
+   */
   currentUser: null,
 
-  // Initialize auth listener
+  /**
+   * Initializes the authentication listener
+   *
+   * Sets up an observer on the user's sign-in state that gets called
+   * whenever the user's sign-in state changes.
+   */
   init() {
     if (auth) {
       onAuthStateChanged(auth, (user) => {
@@ -32,7 +52,14 @@ const authService = {
     }
   },
 
-  // Sign in with email and password
+  /**
+   * Signs in a user with email and password
+   *
+   * @param {string} email - The user's email
+   * @param {string} password - The user's password
+   * @returns {Promise<Object>} User credential object
+   * @throws {Error} If authentication fails or Firebase is not configured
+   */
   async signIn(email, password) {
     if (!auth) {
       console.log('Firebase not configured');
@@ -52,7 +79,14 @@ const authService = {
     }
   },
 
-  // Sign in with Google
+  /**
+   * Signs in a user with Google authentication
+   *
+   * Opens a popup window for Google authentication and returns the user credentials.
+   *
+   * @returns {Promise<Object>} User credential object
+   * @throws {Error} If authentication fails or Firebase is not configured
+   */
   async signInWithGoogle() {
     if (!auth) {
       console.log('Firebase not configured');
@@ -69,7 +103,14 @@ const authService = {
     }
   },
 
-  // Create a new user
+  /**
+   * Creates a new user account with email and password
+   *
+   * @param {string} email - The user's email
+   * @param {string} password - The user's password
+   * @returns {Promise<Object>} User credential object
+   * @throws {Error} If sign-up fails or Firebase is not configured
+   */
   async signUp(email, password) {
     if (!auth) {
       console.log('Firebase not configured');
@@ -89,7 +130,12 @@ const authService = {
     }
   },
 
-  // Sign out
+  /**
+   * Signs out the current user
+   *
+   * @returns {Promise<void>}
+   * @throws {Error} If sign-out fails
+   */
   async signOut() {
     if (!auth) {
       console.log('Firebase not configured');
@@ -104,7 +150,11 @@ const authService = {
     }
   },
 
-  // Get current user
+  /**
+   * Gets the currently signed-in user
+   *
+   * @returns {Object|null} Current user object or null if no user is signed in
+   */
   getCurrentUser() {
     return this.currentUser;
   },
