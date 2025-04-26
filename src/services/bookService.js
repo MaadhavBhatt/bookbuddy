@@ -1,9 +1,25 @@
+/**
+ * @fileoverview Book Service for BookBuddy
+ *
+ * This service handles all interactions with the books collection in Firestore,
+ * providing methods for retrieving and searching books.
+ *
+ * @module bookService
+ */
+
 import { db, firestoreLib } from '@/firebase';
 
-// eslint-disable-next-line
-const { collection, getDocs, query, where } = firestoreLib;
+const { collection, getDocs } = firestoreLib;
 
+/**
+ * Book Service object containing all book-related functionality
+ */
 const bookService = {
+  /**
+   * Retrieves all books from the database
+   *
+   * @returns {Promise<Array>} Array of book objects with their document IDs
+   */
   async getAllBooks() {
     try {
       const querySnapshot = await getDocs(collection(db, 'books'));
@@ -18,6 +34,15 @@ const bookService = {
     }
   },
 
+  /**
+   * Searches for books that match the provided query string
+   *
+   * Performs a client-side search on book titles, authors, and descriptions.
+   * If the search query is empty, returns all books.
+   *
+   * @param {string} searchQuery - The search term to filter books by
+   * @returns {Promise<Array>} Array of book objects that match the search criteria
+   */
   async searchBooks(searchQuery) {
     if (!searchQuery || searchQuery.trim() === '') {
       return this.getAllBooks();
