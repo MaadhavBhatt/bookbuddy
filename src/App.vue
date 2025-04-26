@@ -402,6 +402,10 @@ export default {
   font-size: 10px;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
