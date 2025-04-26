@@ -23,6 +23,8 @@
       v-if="showBookModal"
       :bookData="bookData"
       @close="showBookModal = false"
+      @request-success="handleRequestSuccess"
+      @login-required="handleLoginRequired"
     />
 
     <header class="header">
@@ -65,10 +67,7 @@
         </div>
       </section>
 
-      <section
-        class="search-results"
-        v-if="searchQuery.trim() && this.searchFocused"
-      >
+      <section class="search-results" v-if="searchQuery.trim()">
         <div class="container flex-col gap-2 align-center">
           <div v-if="isSearching" class="loader"></div>
 
@@ -383,6 +382,25 @@ export default {
       });
       this.bookData = book;
       this.showBookModal = true;
+    },
+
+    handleLoginRequired() {
+      this.showBookModal = false;
+      this.showLoginModal = true;
+
+      // Wait for successful login, then reopen book modal
+      this.$once('auth-success', () => {
+        this.showBookModal = true;
+      });
+    },
+
+    handleRequestSuccess(bookId) {
+      alert('Book request sent successfully!');
+
+      // Optionally refresh search results to show updated status
+      if (this.searchQuery) {
+        this.performSearch();
+      }
     },
   },
 };

@@ -203,6 +203,7 @@
 <script>
 /* eslint-disable */
 import { db, firestoreLib } from '@/firebase';
+import requestService from '@/services/requestService';
 
 export default {
   name: 'UserDashboard',
@@ -287,19 +288,41 @@ export default {
     },
 
     async fetchRequests() {
-      const { collection, query, where, getDocs } = firestoreLib;
+      try {
+        // Use the requestService to get all requests for the current user
+        const { requestsMade } = await requestService.getUserRequests(
+          this.currentUser.uid
+        );
 
-      const requestsRef = collection(db, 'requests');
-      const q = query(
-        requestsRef,
-        where('requesterId', '==', this.currentUser.uid)
-      );
-      const snapshot = await getDocs(q);
+        // Store the requests in the component data
+        this.requests = requestsMade;
 
-      this.requests = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+        // For each request, get the book details
+        for (const request of this.requests) {
+          // Get the book details
+          const bookRef = firestoreLib.doc(db, 'books', request.bookId);
+          const bookSnap = await firestoreLib.getDoc(bookRef);
+
+          if (bookSnap.exists()) {
+            const bookData = bookSnap.data();
+            // Add book details to the request
+            request.bookTitle = bookData.title;
+            request.bookAuthor = bookData.author;
+            request.bookCover = bookData.coverUrl;
+
+            // Format date
+            if (request.createdAt) {
+              // Handle Firestore timestamp
+              request.requestDate =
+                request.createdAt instanceof Date
+                  ? request.createdAt
+                  : request.createdAt.toDate();
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching requests:', error);
+      }
     },
 
     async fetchDonations() {
@@ -350,13 +373,8 @@ export default {
       }
 
       try {
-        const { doc, updateDoc } = firestoreLib;
-        const requestRef = doc(db, 'requests', request.id);
-
-        await updateDoc(requestRef, {
-          status: 'cancelled',
-          cancelledAt: new Date().toISOString(),
-        });
+        // Use the requestService to cancel the request
+        await requestService.cancelRequest(request.id);
 
         // Update local data
         const index = this.requests.findIndex((r) => r.id === request.id);
