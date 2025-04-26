@@ -44,7 +44,7 @@
             <button
               class="action-button request-button"
               v-if="bookData.status === 'available'"
-              @click="requestBook"
+              @click="this.showWarning = true"
             >
               Request Book
             </button>
@@ -105,6 +105,8 @@
 
 <script>
 import WarningModal from './WarningModal.vue';
+import requestService from '@/services/requestService';
+import authService from '@/services/authService';
 
 export default {
   name: 'BookModal',
@@ -182,7 +184,45 @@ export default {
     },
 
     requestBook() {
-      this.showWarning = true;
+      this.isLoading = true;
+
+      const currentUser = authService.getCurrentUser();
+
+      if (!currentUser) {
+        // User is not logged in
+        this.isLoading = false;
+        this.showWarning = false;
+        this.$emit('login-required');
+        return;
+      }
+
+      // Format the request data properly
+      const requestData = {
+        bookId: this.bookData.id,
+        requesterId: currentUser.uid,
+        donorId: this.bookData.id,
+        message: '', // Optional message field
+      };
+
+      console.log('Sending request data:', requestData);
+
+      requestService
+        .createRequest(requestData)
+        .then(() => {
+          this.$emit('request-success', requestData.bookId);
+          this.showWarning = false;
+          this.close();
+        })
+        .catch((error) => {
+          console.error('Error requesting book:', error);
+          // Show error message to user
+          this.warningMessage =
+            'Failed to request this book. Please try again.';
+          this.showWarning = true;
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
   },
 };

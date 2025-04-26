@@ -15,16 +15,14 @@ style:
 # Feature priorities and roadmap
 features:
   current:
-    - name: 'Enable smooth scrolling'
-      priority: medium
-  planned:
-    - name: 'Book Request System'
-      priority: medium
     - name: 'Add font size styles where missing'
       priority: medium
-    - name: 'Combine modal styles into one component'
-      description: 'Arguments are passed to this component. The title and other common fields are in text form and the content field is written in markup.'
+    - name: 'Make modal styles consistent'
       priority: medium
+  planned:
+    - name: 'Combine modals into one component'
+      description: 'Arguments are passed to this component. The title and other common fields are in text form and the content field is written in markup.'
+      priority: low
     - name: 'Messaging System'
       description: 'Send email notification to donor when their book is requested.'
       priority: medium
