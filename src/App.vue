@@ -438,6 +438,15 @@ a {
   font-size: inherit;
 }
 
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 select {
   appearance: none;
   border: none;
@@ -470,7 +479,6 @@ option {
 /* Utility CLasses */
 .container {
   width: min(80%, 100rem);
-  /* max-width: 100rem; */
   margin: 0 auto;
 }
 

@@ -425,10 +425,7 @@ export default {
 
 .donate-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0 0 0 0;
   z-index: 100;
   display: flex;
   align-items: center;
@@ -437,11 +434,8 @@ export default {
 
 .modal-backdrop {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0 0 0 0;
+  background-color: var(--clr-overlay);
 }
 
 .modal-content {
@@ -450,7 +444,7 @@ export default {
   max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
-  background-color: #2c2c2c;
+  background-color: var(--clr-tertiary);
   border-radius: 0.8rem;
   box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.3);
   z-index: 101;
@@ -620,13 +614,7 @@ button {
   border: none;
   border-radius: 0.4rem;
   font-weight: 500;
-  cursor: pointer;
   transition: background-color 0.2s;
-}
-
-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
 }
 
 .submit-button {
