@@ -25,6 +25,7 @@
       @close="showBookModal = false"
       @request-success="handleRequestSuccess"
       @login-required="handleLoginRequired"
+      @clear-search="searchQuery = ''"
     />
 
     <header class="header">
@@ -56,7 +57,7 @@
         <div class="container search-container">
           <input
             type="text"
-            placeholder="Search books (Ctrl+P)..."
+            placeholder="Search books (Ctrl+P) ..."
             class="search-input"
             @focus="searchFocused = true"
             @blur="searchFocused = false"

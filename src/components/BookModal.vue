@@ -223,6 +223,8 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+
+      this.$emit('clear-search');
     },
   },
 };
