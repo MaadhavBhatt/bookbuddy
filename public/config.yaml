@@ -1,0 +1,11 @@
+fork:
+  # This will be displayed as a prefix to BookBuddy on the website. Use an empty string if you don't want to display anything. We recommend using the name of your organization to avoid confusion with the parent project BookBuddy.
+  name: ''
+
+  # This is the URL to your forked repository. It will be used to create a link to your fork on the website.
+  githubUrl: ''
+
+# DO NOT EDIT THIS. IT SERVES AS A FALLBACK IF ANY OF THE PREVIOUS DATA IS UNAVAILABLE.
+parent:
+  name: ''
+  githubUrl: 'https://github.com/MaadhavBhatt/bookbuddy'

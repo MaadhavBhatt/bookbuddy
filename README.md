@@ -104,9 +104,11 @@ BookBuddy includes a local storage fallback for development without Firebase. To
 
 You may want to customize:
 
-- School name and logo in `src/assets/`
-- Color scheme in `src/App.vue`
-- Contact information in the footer
+- Your fork name in `package.json`
+- Firebase configuration in `.env`
+- Firebase rules in `firestore.rules`
+- Fork name and repo URL in `public/config.yaml`
+- Your preferred logo in `src/assets/logo.png` and `public/favicon.ico`
 
 ## Deploying Your BookBuddy Instance
 

@@ -31,7 +31,9 @@
     <header class="header">
       <div class="header-info">
         <img alt="BookBuddy logo" src="./assets/logo.png" class="logo" />
-        <p class="header-heading"><a href=".">BookBuddy</a></p>
+        <p class="header-heading">
+          <a href=".">{{ pageTitle }}</a>
+        </p>
       </div>
 
       <div class="flex-row gap-1 align-center">
@@ -101,7 +103,7 @@
 
       <section class="hero">
         <div class="container hero-text">
-          <h2 class="hero-heading">Welcome to BookBuddy</h2>
+          <h2 class="hero-heading">Welcome to {{ pageTitle }}</h2>
           <p class="hero-tagline">Connecting book donors and seekers</p>
         </div>
       </section>
@@ -134,15 +136,12 @@
             src="./assets/logo.png"
             class="footer-logo"
           />
-          <span class="footer-name">BookBuddy</span>
+          <span class="footer-name">{{ pageTitle }}</span>
         </div>
 
         <div class="footer-right">
           <a href="#" class="social-link ta-right">Instagram</a>
-          <a
-            href="https://github.com/MaadhavBhatt/bookbuddy"
-            class="social-link ta-left"
-            target="_blank"
+          <a :href="forkGithubUrl" class="social-link ta-left" target="_blank"
             >GitHub</a
           >
         </div>
@@ -164,6 +163,8 @@ import LoginModal from '@/components/LoginModal.vue';
 import authService from '@/services/authService';
 import bookService from '@/services/bookService';
 import BookModal from '@/components/BookModal.vue';
+import axios from 'axios';
+import yaml from 'js-yaml';
 
 export default {
   name: 'App',
@@ -175,6 +176,8 @@ export default {
   },
   data() {
     return {
+      pageTitle: 'BookBuddy',
+      forkGithubUrl: '',
       searchQuery: '',
       searchFocused: false,
       searchResults: [],
@@ -206,6 +209,9 @@ export default {
 
     // Check authentication state
     this.checkAuthState();
+
+    // Load configuration with improved error handling
+    this.loadConfig();
   },
 
   watch: {
@@ -301,6 +307,38 @@ export default {
         : Math.floor(Math.random() * colors.length);
 
       return { backgroundColor: colors[index] };
+    },
+
+    loadConfig() {
+      axios
+        .get('./config.yaml')
+        .then((response) => {
+          const config = yaml.load(response.data);
+
+          if (config && config.fork) {
+            if (config.fork.name) {
+              this.pageTitle = config.fork.name + ' - BookBuddy';
+            } else {
+              console.warn('Fork name not found in config.yaml, using default');
+            }
+
+            document.title = this.pageTitle;
+
+            if (config.fork.githubUrl) {
+              this.forkGithubUrl = config.fork.githubUrl;
+            } else {
+              this.forkGithubUrl = config.parent.githubUrl;
+              console.warn(
+                'Fork GitHub URL not found in config.yaml, using default'
+              );
+            }
+          } else {
+            console.error('Invalid config format');
+          }
+        })
+        .catch((error) => {
+          console.error('Error loading config:', error);
+        });
     },
 
     checkAuthState() {
