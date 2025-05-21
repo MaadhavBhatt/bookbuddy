@@ -825,25 +825,29 @@ section {
 
 .book-status {
   width: fit-content;
-  padding: 4px 8px;
+  padding: 0.25em 0.8em;
+  margin: 0.5rem 0;
   border-radius: 4px;
   font-size: 0.8rem;
   font-weight: 500;
+
+  background-color: var(--text-secondary);
+  color: var(--bg-primary);
 }
 
 .book-status.available {
-  background-color: #2ecc71;
-  color: #fff;
+  background-color: var(--clr-yellow-1);
+  color: var(--bg-secondary);
 }
 
 .book-status.checked_out,
 .book-status.reserved {
-  background-color: #e74c3c;
-  color: #fff;
+  background-color: var(--clr-yellow-2);
+  color: var(--bg-secondary);
 }
 
 .book-description {
-  color: #bbb;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   line-height: 1.4;
 }
