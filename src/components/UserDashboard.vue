@@ -460,10 +460,16 @@ export default {
   width: 95%;
   max-width: 100rem;
   min-height: 80vh;
-  overflow: auto;
-
+  
   background-color: var(--bg-tertiary);
   border-radius: 0.8rem;
+}
+
+.dashboard__content {
+  max-height: 60vh;
+  overflow: auto scroll;
+  scrollbar-width: thin;
+  scrollbar-color: var(--clr-yellow-3) transparent;
 }
 
 .dashboard__title {
