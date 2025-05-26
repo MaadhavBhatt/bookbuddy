@@ -37,10 +37,7 @@
           </select>
         </div>
 
-        <div v-if="isLoading" class="dashboard__loading">
-          <div class="dashboard__spinner"></div>
-          <p class="dashboard__loading-text">Loading...</p>
-        </div>
+        <div v-if="isLoading" class="loader"></div>
 
         <div v-else-if="filteredRequests.length === 0" class="dashboard__empty">
           <p class="dashboard__empty-text">No requests found</p>
@@ -460,15 +457,15 @@ export default {
   width: 95%;
   max-width: 100rem;
   min-height: 80vh;
-  
+
   background-color: var(--bg-tertiary);
   border-radius: 0.8rem;
 }
 
 .dashboard__content {
   max-height: 60vh;
-  overflow: auto scroll;
-  scrollbar-width: thin;
+  overflow: auto;
+  scrollbar-width: none;
   scrollbar-color: var(--clr-yellow-3) transparent;
 }
 
@@ -518,33 +515,6 @@ export default {
   border-radius: 0.4rem;
   color: var(--text-primary);
   font-size: 1.4rem;
-}
-
-.dashboard__loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 0;
-}
-
-.dashboard__spinner {
-  width: 4rem;
-  height: 4rem;
-  border: 0.3rem solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--clr-yellow-1);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.dashboard__loading-text {
-  color: var(--text-secondary);
 }
 
 .dashboard__empty {
