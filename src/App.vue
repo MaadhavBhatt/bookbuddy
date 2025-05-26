@@ -236,7 +236,7 @@ export default {
     window.addEventListener('keydown', (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
         event.preventDefault();
-        this.$refs.searchInput.focus();
+        this.focusSearch();
       } else if (event.key === 'Escape') {
         this.unfocusSearch();
       }
@@ -246,12 +246,10 @@ export default {
   methods: {
     focusSearch() {
       this.$refs.searchInput.focus();
-      this.searchFocused = true;
     },
 
     unfocusSearch() {
       this.$refs.searchInput.blur();
-      this.searchFocused = false;
     },
 
     async performSearch() {
