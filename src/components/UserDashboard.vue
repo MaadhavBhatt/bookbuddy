@@ -4,22 +4,22 @@
 
     <div class="dashboard-content">
       <button class="close-dashboard" @click="close">&times;</button>
-      <div class="dashboard__header">
-        <h2 class="dashboard__title">My Dashboard</h2>
-        <div class="dashboard__tabs">
+      <div class="dashboard-header">
+        <h2 class="dashboard-title">My Dashboard</h2>
+        <div class="dashboard-tabs">
           <button
-            class="dashboard__tab-button"
+            class="dashboard-tab-button"
             :class="{
-              'dashboard__tab-button--active': activeTab === 'requests',
+              'dashboard-tab-button--active': activeTab === 'requests',
             }"
             @click="activeTab = 'requests'"
           >
             My Requests
           </button>
           <button
-            class="dashboard__tab-button"
+            class="dashboard-tab-button"
             :class="{
-              'dashboard__tab-button--active': activeTab === 'donations',
+              'dashboard-tab-button--active': activeTab === 'donations',
             }"
             @click="activeTab = 'donations'"
           >
@@ -28,9 +28,9 @@
         </div>
       </div>
 
-      <div v-if="activeTab === 'requests'" class="dashboard__content">
-        <div class="dashboard__filters">
-          <select v-model="requestFilter" class="dashboard__filter-select">
+      <div v-if="activeTab === 'requests'" class="dashboard-section">
+        <div class="dashboard-filters">
+          <select v-model="requestFilter" class="dashboard-filter-select">
             <option value="all">All Requests</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -39,67 +39,67 @@
 
         <div v-if="isLoading" class="loader"></div>
 
-        <div v-else-if="filteredRequests.length === 0" class="dashboard__empty">
-          <p class="dashboard__empty-text">No requests found</p>
+        <div v-else-if="filteredRequests.length === 0" class="dashboard-empty">
+          <p class="dashboard-empty-text">No requests found</p>
         </div>
 
-        <ul v-else class="dashboard__list">
+        <ul v-else class="dashboard-list">
           <li
             v-for="request in filteredRequests"
             :key="request.id"
             class="dashboard-card"
           >
-            <div class="dashboard-card__header">
+            <div class="dashboard-card-header">
               <div
-                class="dashboard-card__image"
+                class="dashboard-card-image"
                 :style="
                   request.bookCover
                     ? `background-image: url(${request.bookCover})`
                     : ''
                 "
               ></div>
-              <div class="dashboard-card__info">
-                <h3 class="dashboard-card__title">{{ request.bookTitle }}</h3>
-                <p class="dashboard-card__author">{{ request.bookAuthor }}</p>
+              <div class="dashboard-card-info">
+                <h3 class="dashboard-card-title">{{ request.bookTitle }}</h3>
+                <p class="dashboard-card-author">{{ request.bookAuthor }}</p>
                 <span
-                  class="dashboard-card__status"
-                  :class="`dashboard-card__status--${request.status}`"
+                  class="dashboard-card-status"
+                  :class="`dashboard-card-status--${request.status}`"
                 >
                   {{ getStatusLabel(request.status) }}
                 </span>
               </div>
             </div>
-            <div class="dashboard-card__details">
-              <div class="dashboard-card__detail">
-                <span class="dashboard-card__detail-label">Requested:</span>
-                <span class="dashboard-card__detail-value">{{
+            <div class="dashboard-card-details">
+              <div class="dashboard-card-detail">
+                <span class="dashboard-card-detail-label">Requested:</span>
+                <span class="dashboard-card-detail-value">{{
                   formatDate(request.requestDate)
                 }}</span>
               </div>
-              <div class="dashboard-card__detail">
-                <span class="dashboard-card__detail-label">Quantity:</span>
-                <span class="dashboard-card__detail-value">{{
+              <div class="dashboard-card-detail">
+                <span class="dashboard-card-detail-label">Quantity:</span>
+                <span class="dashboard-card-detail-value">{{
                   request.quantity
                 }}</span>
               </div>
             </div>
-            <div class="dashboard-card__actions">
+            <div class="dashboard-card-actions">
               <button
                 v-if="request.status === 'pending'"
-                class="dashboard-card__button dashboard-card__button--cancel"
+                class="dashboard-card-button dashboard-card-button--cancel"
                 @click="cancelRequest(request)"
               >
                 Cancel
               </button>
               <button
                 v-if="request.status === 'approved'"
-                class="dashboard-card__button dashboard-card__button--primary"
+                class="dashboard-card-button dashboard-card-button--primary"
               >
                 Contact Donor
               </button>
               <button
                 v-if="request.status === 'ready'"
-                class="dashboard-card__button dashboard-card__button--success"
+                class="dashboard-card-button dashboard-card-button--success"
                 @click="markReceived(request)"
               >
                 Mark Received
@@ -109,83 +109,77 @@
         </ul>
       </div>
 
-      <div v-if="activeTab === 'donations'" class="dashboard__content">
-        <div class="dashboard__filters">
-          <select v-model="donationFilter" class="dashboard__filter-select">
+      <div v-if="activeTab === 'donations'" class="dashboard-section">
+        <div class="dashboard-filters">
+          <select v-model="donationFilter" class="dashboard-filter-select">
             <option value="all">All Donations</option>
             <option value="available">Available</option>
             <option value="transferred">Transferred</option>
           </select>
         </div>
 
-        <div v-if="isLoading" class="dashboard__loading">
-          <div class="dashboard__spinner"></div>
-          <p class="dashboard__loading-text">Loading...</p>
+        <div v-if="isLoading" class="loader"></div>
+
+        <div v-else-if="filteredDonations.length === 0" class="dashboard-empty">
+          <p class="dashboard-empty-text">No donations found</p>
         </div>
 
-        <div
-          v-else-if="filteredDonations.length === 0"
-          class="dashboard__empty"
-        >
-          <p class="dashboard__empty-text">No donations found</p>
-        </div>
-
-        <ul v-else class="dashboard__list">
+        <ul v-else class="dashboard-list">
           <li
             v-for="donation in filteredDonations"
             :key="donation.id"
             class="dashboard-card"
           >
-            <div class="dashboard-card__header">
+            <div class="dashboard-card-header">
               <div
-                class="dashboard-card__image"
+                class="dashboard-card-image"
                 :style="
                   donation.coverImage
                     ? `background-image: url(${donation.coverImage})`
                     : ''
                 "
               ></div>
-              <div class="dashboard-card__info">
-                <h3 class="dashboard-card__title">{{ donation.title }}</h3>
-                <p class="dashboard-card__author">{{ donation.author }}</p>
+              <div class="dashboard-card-info">
+                <h3 class="dashboard-card-title">{{ donation.title }}</h3>
+                <p class="dashboard-card-author">{{ donation.author }}</p>
                 <span
-                  class="dashboard-card__status"
+                  class="dashboard-card-status"
                   :class="`dashboard-card__status--${donation.status}`"
                 >
                   {{ getStatusLabel(donation.status) }}
                 </span>
               </div>
             </div>
-            <div class="dashboard-card__details">
-              <div class="dashboard-card__detail">
-                <span class="dashboard-card__detail-label">Donated:</span>
-                <span class="dashboard-card__detail-value">{{
+            <div class="dashboard-card-details">
+              <div class="dashboard-card-detail">
+                <span class="dashboard-card-detail-label">Donated:</span>
+                <span class="dashboard-card-detail-value">{{
                   formatDate(donation.addedAt)
                 }}</span>
               </div>
-              <div class="dashboard-card__detail">
-                <span class="dashboard-card__detail-label">Copies:</span>
-                <span class="dashboard-card__detail-value">{{
+              <div class="dashboard-card-detail">
+                <span class="dashboard-card-detail-label">Copies:</span>
+                <span class="dashboard-card-detail-value">{{
                   donation.copies
                 }}</span>
               </div>
-              <div class="dashboard-card__detail">
-                <span class="dashboard-card__detail-label">Condition:</span>
-                <span class="dashboard-card__detail-value">{{
+              <div class="dashboard-card-detail">
+                <span class="dashboard-card-detail-label">Condition:</span>
+                <span class="dashboard-card-detail-value">{{
                   donation.condition
                 }}</span>
               </div>
             </div>
-            <div class="dashboard-card__actions">
+            <div class="dashboard-card-actions">
               <button
                 v-if="donation.status === 'available'"
-                class="dashboard-card__button dashboard-card__button--edit"
+                class="dashboard-card-button dashboard-card__button--edit"
               >
                 Edit
               </button>
               <button
                 v-if="donation.status === 'requested'"
-                class="dashboard-card__button dashboard-card__button--primary"
+                class="dashboard-card-button dashboard-card-button--primary"
               >
                 View Requests
               </button>
@@ -462,25 +456,25 @@ export default {
   border-radius: 0.8rem;
 }
 
-.dashboard__content {
+.dashboard-section {
   max-height: 60vh;
   overflow: auto;
   scrollbar-width: none;
   scrollbar-color: var(--clr-yellow-3) transparent;
 }
 
-.dashboard__title {
+.dashboard-title {
   font-size: 2.4rem;
   color: var(--text-primary);
 }
 
-.dashboard__tabs {
+.dashboard-tabs {
   display: flex;
   border-bottom: 1px solid var(--border-color);
   padding: 1rem 0;
 }
 
-.dashboard__tab-button {
+.dashboard-tab-button {
   padding: 1.2rem 1.6rem;
   background: none;
   border: none;
@@ -490,11 +484,11 @@ export default {
   position: relative;
 }
 
-.dashboard__tab-button--active {
+.dashboard-tab-button--active {
   color: var(--clr-yellow-1);
 }
 
-.dashboard__tab-button--active::after {
+.dashboard-tab-button--active::after {
   content: '';
   position: absolute;
   bottom: -1px;
@@ -504,11 +498,11 @@ export default {
   background-color: var(--clr-yellow-1);
 }
 
-.dashboard__filters {
+.dashboard-filters {
   padding: 1rem 0;
 }
 
-.dashboard__filter-select {
+.dashboard-filter-select {
   width: 100%;
   padding: 1rem;
   background-color: var(--bg-secondary);
@@ -517,16 +511,16 @@ export default {
   font-size: 1.4rem;
 }
 
-.dashboard__empty {
+.dashboard-empty {
   text-align: center;
   padding: 4rem 0;
 }
 
-.dashboard__empty-text {
+.dashboard-empty-text {
   color: var(--text-secondary);
 }
 
-.dashboard__list {
+.dashboard-list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -547,12 +541,12 @@ export default {
   gap: 1rem;
 }
 
-.dashboard-card__header {
+.dashboard-card-header {
   display: flex;
   gap: 1rem;
 }
 
-.dashboard-card__image {
+.dashboard-card-image {
   width: 6rem;
   height: 9rem;
   background-color: var(--clr-yellow-2);
@@ -562,7 +556,7 @@ export default {
   flex-shrink: 0;
 }
 
-.dashboard-card__info {
+.dashboard-card-info {
   flex: 1;
 
   display: flex;
@@ -570,17 +564,17 @@ export default {
   gap: 0.5rem;
 }
 
-.dashboard-card__title {
+.dashboard-card-title {
   font-size: 1.8rem;
   color: var(--text-primary);
 }
 
-.dashboard-card__author {
+.dashboard-card-author {
   font-size: 1.4rem;
   color: var(--text-secondary);
 }
 
-.dashboard-card__status {
+.dashboard-card-status {
   display: inline-block;
   padding: 0.4rem 0.8rem;
   max-width: fit-content;
@@ -590,29 +584,29 @@ export default {
   color: var(--bg-secondary);
 }
 
-.dashboard-card__status--available,
-.dashboard-card__status--ready,
-.dashboard-card__button--success {
+.dashboard-card-status--available,
+.dashboard-card-status--ready,
+.dashboard-card-button--success {
   background-color: var(--clr-yellow-1);
 }
 
-.dashboard-card__status--requested,
-.dashboard-card__status--pending {
+.dashboard-card-status--requested,
+.dashboard-card-status--pending {
   background-color: var(--clr-yellow-2);
 }
 
-.dashboard-card__status--transferred,
-.dashboard-card__status--fulfilled {
+.dashboard-card-status--transferred,
+.dashboard-card-status--fulfilled {
   background-color: var(--clr-yellow-3);
 }
 
-.dashboard-card__button--edit {
+.dashboard-card-button--edit {
   background-color: transparent;
   border: 1px solid var(--clr-yellow-1);
   color: var(--clr-yellow-1);
 }
 
-.dashboard-card__button--primary {
+.dashboard-card-button--primary {
   background-color: var(--clr-blue);
   border: none;
   color: var(--bg-secondary);
@@ -622,41 +616,41 @@ export default {
   background-color: var(--clr-blue);
 }
 
-.dashboard-card__status--cancelled,
-.dashboard-card__status--rejected {
+.dashboard-card-status--cancelled,
+.dashboard-card-status--rejected {
   background-color: var(--clr-red-1);
   color: var(--text-primary);
 }
 
-.dashboard-card__button--cancel {
+.dashboard-card-button--cancel {
   background-color: transparent;
   border: 1px solid var(--clr-red-1);
   color: var(--clr-red-1);
 }
 
-.dashboard-card__detail {
+.dashboard-card-detail {
   display: flex;
   justify-content: space-between;
   font-size: 1.4rem;
 }
 
-.dashboard-card__detail-label {
+.dashboard-card-detail-label {
   color: var(--text-secondary);
 }
 
-.dashboard-card__detail-value {
+.dashboard-card-detail-value {
   color: var(--text-primary);
   font-weight: 500;
 }
 
-.dashboard-card__actions {
+.dashboard-card-actions {
   border-top: 1px solid var(--border-color);
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
 }
 
-.dashboard-card__button {
+.dashboard-card-button {
   padding: 0.8rem 1.6rem;
   border-radius: 0.4rem;
   font-weight: 500;
@@ -666,19 +660,19 @@ export default {
 
 /* Media queries for responsive design */
 @media (min-width: 768px) {
-  .dashboard__filter-select {
+  .dashboard-filter-select {
     width: auto;
     min-width: 20rem;
   }
 
-  .dashboard__list {
+  .dashboard-list {
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .dashboard__list {
+  .dashboard-list {
     grid-template-columns: repeat(3, 1fr);
   }
 }
