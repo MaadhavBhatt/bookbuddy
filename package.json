@@ -22,7 +22,9 @@
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "firebase-tools": "^13.34.0",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "sass": "^1.89.1",
+    "sass-loader": "^16.0.5"
   },
   "eslintConfig": {
     "root": true,
