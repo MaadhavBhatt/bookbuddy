@@ -728,7 +728,18 @@ section {
     radial-gradient(farthest-side, var(--clr-yellow-1) 94%, transparent);
   background: var(--_g), var(--_g), var(--_g), var(--_g);
   background-size: 20% 100%;
-  animation: l40-1 0.75s infinite alternate, l40-2 1.5s infinite alternate;
+}
+
+@media not (prefers-reduced-motion: reduce) {
+  .loader {
+    animation: l40-1 0.75s infinite alternate, l40-2 1.5s infinite alternate;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    background-position: 0 0, calc(100% / 3) 0, calc(2 * 100% / 3) 0, 100% 0;
+  }
 }
 
 @keyframes l40-1 {

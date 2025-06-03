@@ -29,7 +29,7 @@ features:
     - name: 'User Rating System'
       priority: low
     - name: 'Accessible styles'
-      description: 'Use prefers-color-scheme, disable animation if browser settings request so, etc.'
+      description: 'Use prefers-color-scheme, etc.'
       priority: medium
     - name: 'User Profile Page'
       description: 'Show user profile with their books and requests.'
