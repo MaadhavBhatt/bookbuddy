@@ -11,10 +11,10 @@
   <div class="overlay" @click="close"></div>
 
   <div class="book-modal">
-    <button class="close-button" @click="close">&times;</button>
-
     <div class="book-modal-content flex-col gap-2" v-if="!isLoading">
       <div class="book-modal-header flex-col gap-2">
+        <button class="close-button" @click="close">&times;</button>
+
         <div class="book-cover" :style="getBookCoverStyle()">
           <img
             v-if="bookData.coverUrl"
@@ -244,42 +244,50 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
   background-color: var(--bg-tertiary);
   border-radius: 1.6rem;
-  padding: 2.5rem;
+
+  padding: 4rem 3rem;
   width: min(90vw, 700px);
   max-height: 85vh;
+
   overflow-y: auto;
   z-index: 100;
   animation: fade-in-lift 0.3s ease;
 }
 
 .close-button {
-  position: relative;
-  top: 0;
-  right: 0;
-  background: none;
+  position: absolute;
+  inset: 0 0 auto auto;
+
+  background: var(--bg-secondary);
   border: none;
+  border-radius: 0 0 0 1rem;
+  padding: 1rem;
+
   font-size: 2.4rem;
+  line-height: 0.7;
   color: var(--text-secondary);
+
   cursor: pointer;
   z-index: 2;
-  padding: 0.5rem;
-  margin-left: auto;
-  transition: background-color 0.2s;
+  transition: color 0.2s;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  &:hover {
+    color: var(--clr-yellow-1);
+  }
+
+  @media (min-width: 600px) {
+    background: none;
+    padding: 0;
+  }
 }
 
-.close-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
-}
+.book-modal-header {
+  position: relative;
 
-@media (min-width: 600px) {
-  .book-modal-header {
+  @media (min-width: 600px) {
     flex-direction: row;
   }
 }
@@ -370,21 +378,21 @@ export default {
   background-color: var(--clr-yellow-1);
   border: none;
   color: var(--bg-primary);
-}
 
-.request-button:hover {
-  background-color: var(--clr-yellow-2);
+  &:hover {
+    background-color: var(--clr-yellow-2);
+  }
 }
 
 .save-button {
   background-color: transparent;
   border: 1px solid var(--text-secondary);
   color: var(--text-secondary);
-}
 
-.save-button:hover {
-  border-color: var(--text-primary);
-  color: var(--text-primary);
+  &:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+  }
 }
 
 .section-title {
