@@ -134,10 +134,10 @@ class RequestService {
    * based on the new request status:
    * - 'approved': Book status set to 'reserved'
    * - 'completed': Book status set to 'checked_out'
-   * - 'rejected' or 'cancelled': Book status set to 'available'
+   * - 'rejected' or 'canceled': Book status set to 'available'
    *
    * @param {string} requestId - ID of the request to update
-   * @param {string} newStatus - New status ('approved', 'rejected', 'completed', 'cancelled')
+   * @param {string} newStatus - New status ('approved', 'rejected', 'completed', 'canceled')
    * @returns {Promise<void>}
    * @throws {Error} If the request is not found or if database operations fail
    */
@@ -168,7 +168,7 @@ class RequestService {
         await updateDoc(bookRef, { status: 'reserved' });
       } else if (newStatus === 'completed') {
         await updateDoc(bookRef, { status: 'checked_out' });
-      } else if (newStatus === 'rejected' || newStatus === 'cancelled') {
+      } else if (newStatus === 'rejected' || newStatus === 'canceled') {
         await updateDoc(bookRef, {
           status: 'available',
           requestId: null,
@@ -183,7 +183,7 @@ class RequestService {
   /**
    * Cancel a book request (by requester)
    *
-   * Convenience method that calls updateRequestStatus with 'cancelled' status.
+   * Convenience method that calls updateRequestStatus with 'canceled' status.
    * Sets the book status back to 'available'.
    *
    * @param {string} requestId - ID of the request to cancel
@@ -191,7 +191,7 @@ class RequestService {
    * @throws {Error} If the request is not found or if database operations fail
    */
   async cancelRequest(requestId) {
-    return this.updateRequestStatus(requestId, 'cancelled');
+    return this.updateRequestStatus(requestId, 'canceled');
   }
 }
 

@@ -227,7 +227,7 @@ export default {
         );
       } else {
         return this.requests.filter((req) =>
-          ['fulfilled', 'cancelled', 'rejected'].includes(req.status)
+          ['fulfilled', 'canceled', 'rejected'].includes(req.status)
         );
       }
     },
@@ -341,7 +341,7 @@ export default {
         approved: 'Approved',
         ready: 'Ready for Pickup',
         fulfilled: 'Received',
-        cancelled: 'Cancelled',
+        canceled: 'canceled',
         rejected: 'Declined',
         available: 'Available',
         requested: 'Requested',
@@ -370,11 +370,19 @@ export default {
         // Update local data
         const index = this.requests.findIndex((r) => r.id === request.id);
         if (index !== -1) {
-          this.requests[index].status = 'cancelled';
+          this.requests[index].status = 'canceled';
         }
       } catch (error) {
         console.error('Error cancelling request:', error);
-        alert('Failed to cancel request');
+
+        // Show more specific error message based on the error
+        if (error.code === 'permission-denied') {
+          alert(
+            'Permission denied. You may not have rights to cancel this request.'
+          );
+        } else {
+          alert(`Failed to cancel request: ${error.message}`);
+        }
       }
     },
 
@@ -616,7 +624,7 @@ export default {
   background-color: var(--clr-blue);
 }
 
-.dashboard-card-status--cancelled,
+.dashboard-card-status--canceled,
 .dashboard-card-status--rejected {
   background-color: var(--clr-red-1);
   color: var(--text-primary);
