@@ -4,6 +4,7 @@
 
     <div class="dashboard-content">
       <button class="close-dashboard" @click="close">&times;</button>
+
       <div class="dashboard-header">
         <h2 class="dashboard-title">My Dashboard</h2>
         <div class="dashboard-tabs">
@@ -149,40 +150,6 @@
                   {{ getStatusLabel(donation.status) }}
                 </span>
               </div>
-            </div>
-            <div class="dashboard-card-details">
-              <div class="dashboard-card-detail">
-                <span class="dashboard-card-detail-label">Donated:</span>
-                <span class="dashboard-card-detail-value">{{
-                  formatDate(donation.addedAt)
-                }}</span>
-              </div>
-              <div class="dashboard-card-detail">
-                <span class="dashboard-card-detail-label">Copies:</span>
-                <span class="dashboard-card-detail-value">{{
-                  donation.copies
-                }}</span>
-              </div>
-              <div class="dashboard-card-detail">
-                <span class="dashboard-card-detail-label">Condition:</span>
-                <span class="dashboard-card-detail-value">{{
-                  donation.condition
-                }}</span>
-              </div>
-            </div>
-            <div class="dashboard-card-actions">
-              <button
-                v-if="donation.status === 'available'"
-                class="dashboard-card-button dashboard-card__button--edit"
-              >
-                Edit
-              </button>
-              <button
-                v-if="donation.status === 'requested'"
-                class="dashboard-card-button dashboard-card-button--primary"
-              >
-                View Requests
-              </button>
             </div>
           </li>
         </ul>
@@ -507,7 +474,7 @@ export default {
 }
 
 .dashboard-filters {
-  padding: 1rem 0;
+  padding: 1em 0;
 }
 
 .dashboard-filter-select {
@@ -608,18 +575,6 @@ export default {
   background-color: var(--clr-yellow-3);
 }
 
-.dashboard-card-button--edit {
-  background-color: transparent;
-  border: 1px solid var(--clr-yellow-1);
-  color: var(--clr-yellow-1);
-}
-
-.dashboard-card-button--primary {
-  background-color: var(--clr-blue);
-  border: none;
-  color: var(--bg-secondary);
-}
-
 .dashboard-card__status--approved {
   background-color: var(--clr-blue);
 }
@@ -634,21 +589,6 @@ export default {
   background-color: transparent;
   border: 1px solid var(--clr-red-1);
   color: var(--clr-red-1);
-}
-
-.dashboard-card-detail {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.4rem;
-}
-
-.dashboard-card-detail-label {
-  color: var(--text-secondary);
-}
-
-.dashboard-card-detail-value {
-  color: var(--text-primary);
-  font-weight: 500;
 }
 
 .dashboard-card-actions {
