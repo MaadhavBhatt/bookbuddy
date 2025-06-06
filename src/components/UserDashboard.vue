@@ -70,42 +70,6 @@
                 </span>
               </div>
             </div>
-            <div class="dashboard-card-details">
-              <div class="dashboard-card-detail">
-                <span class="dashboard-card-detail-label">Requested:</span>
-                <span class="dashboard-card-detail-value">{{
-                  formatDate(request.requestDate)
-                }}</span>
-              </div>
-              <div class="dashboard-card-detail">
-                <span class="dashboard-card-detail-label">Quantity:</span>
-                <span class="dashboard-card-detail-value">{{
-                  request.quantity
-                }}</span>
-              </div>
-            </div>
-            <div class="dashboard-card-actions">
-              <button
-                v-if="request.status === 'pending'"
-                class="dashboard-card-button dashboard-card-button--cancel"
-                @click="cancelRequest(request)"
-              >
-                Cancel
-              </button>
-              <button
-                v-if="request.status === 'approved'"
-                class="dashboard-card-button dashboard-card-button--primary"
-              >
-                Contact Donor
-              </button>
-              <button
-                v-if="request.status === 'ready'"
-                class="dashboard-card-button dashboard-card-button--success"
-                @click="markReceived(request)"
-              >
-                Mark Received
-              </button>
-            </div>
           </li>
         </ul>
       </div>
@@ -323,34 +287,6 @@ export default {
 
       const date = new Date(dateString);
       return date.toLocaleDateString();
-    },
-
-    async cancelRequest(request) {
-      if (!confirm(`Cancel your request for "${request.bookTitle}"?`)) {
-        return;
-      }
-
-      try {
-        // Use the requestService to cancel the request
-        await requestService.cancelRequest(request.id);
-
-        // Update local data
-        const index = this.requests.findIndex((r) => r.id === request.id);
-        if (index !== -1) {
-          this.requests[index].status = 'canceled';
-        }
-      } catch (error) {
-        console.error('Error cancelling request:', error);
-
-        // Show more specific error message based on the error
-        if (error.code === 'permission-denied') {
-          alert(
-            'Permission denied. You may not have rights to cancel this request.'
-          );
-        } else {
-          alert(`Failed to cancel request: ${error.message}`);
-        }
-      }
     },
 
     async markReceived(request) {
