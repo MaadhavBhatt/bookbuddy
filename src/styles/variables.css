@@ -14,9 +14,9 @@ Color Scheme:
   --text-primary: #e0e0e0;
   --text-secondary: #b0b0b0;
 
-  --clr-yellow-1: #b0ffa1;
-  --clr-yellow-2: #e4b304;
-  --clr-yellow-3: #e4b304;
+  --clr-yellow-1: hsl(110, 100%, 82%);
+  --clr-yellow-2: hsl(47, 97%, 45%);
+  --clr-yellow-3: hsl(47, 97%, 40%);
   --clr-blue: #f121eb;
   --clr-grey: #16a591;
 
@@ -24,4 +24,13 @@ Color Scheme:
   --clr-overlay: rgba(0, 0, 0, 0.7);
 
   --ff-main: 'Source Sans 3', sans-serif;
+
+  /* Font sizes */
+  --fz-xxl: clamp(4rem, 6vw, 6rem);
+  --fz-xl: clamp(3rem, 5vw, 5rem);
+  --fz-lg: clamp(2rem, 4vw, 3rem);
+  --fz-md: clamp(1.5rem, 3vw, 2rem);
+  --fz-sm: clamp(1rem, 2vw, 1.5rem);
+  --fz-xs: clamp(0.8rem, 1.5vw, 1.2rem);
+  --fz-xxs: clamp(0.6rem, 1vw, 1rem);
 }

@@ -867,13 +867,13 @@ section {
 }
 
 .hero-heading {
-  font-size: clamp(3em, 5vw, 5em);
+  font-size: var(--fz-xl);
   color: var(--clr-yellow-1);
   font-weight: 700;
 }
 
 .hero-tagline {
-  font-size: 1.2rem;
+  font-size: var(--fz-md);
   color: var(--text-secondary);
 }
 
@@ -890,6 +890,14 @@ section {
   flex-basis: 0;
   padding: 1rem;
   text-align: center;
+
+  & h3 {
+    font-size: var(--fz-md);
+  }
+
+  & p {
+    font-size: var(--fz-sm);
+  }
 }
 
 /* Footer */
