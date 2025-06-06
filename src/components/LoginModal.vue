@@ -173,8 +173,9 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @import url(../styles/variables.css);
+@import '../styles/modal.scss';
 
 * {
   font-family: var(--ff-main);
@@ -216,20 +217,6 @@ export default {
   & h2 {
     font-size: 2.5rem;
     color: var(--text-primary);
-  }
-}
-
-.close-button {
-  background: none;
-  border: none;
-  font-size: 2.4rem;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: color 0.2s ease, transform 0.2s ease;
-
-  &:hover {
-    color: var(--clr-yellow-2);
-    transform: scale(1.1);
   }
 }
 

@@ -1,0 +1,14 @@
+.close-button {
+  background: none;
+  border: none;
+  font-size: 2.4rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+
+  &:hover,
+  &:focus {
+    color: var(--clr-yellow-1);
+    transform: scale(1.05);
+  }
+}

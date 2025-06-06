@@ -422,6 +422,7 @@ export default {
 
 <style scoped>
 @import url(../styles/variables.css);
+@import '../styles/modal.scss';
 
 .donate-modal {
   position: fixed;
@@ -461,18 +462,6 @@ export default {
 .modal-header h2 {
   margin: 0;
   color: white;
-}
-
-.close-button {
-  background: none;
-  border: none;
-  font-size: 2.4rem;
-  color: #aaa;
-  cursor: pointer;
-
-  &:hover {
-    color: white;
-  }
 }
 
 .modal-body {

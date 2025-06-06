@@ -230,8 +230,9 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @import url('../styles/variables.css');
+@import '../styles/modal.scss';
 
 .overlay {
   /* This element inherits properties from App.vue. */
@@ -262,21 +263,11 @@ export default {
   inset: 0 0 auto auto;
 
   background: var(--bg-secondary);
-  border: none;
   border-radius: 0 0 0 1rem;
   padding: 1rem;
 
-  font-size: 2.4rem;
   line-height: 0.7;
-  color: var(--text-secondary);
-
-  cursor: pointer;
   z-index: 2;
-  transition: color 0.2s;
-
-  &:hover {
-    color: var(--clr-yellow-1);
-  }
 
   @media (min-width: 600px) {
     background: none;

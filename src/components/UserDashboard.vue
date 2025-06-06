@@ -3,7 +3,7 @@
     <div class="dashboard-overlay" @click="close"></div>
 
     <div class="dashboard-content">
-      <button class="close-dashboard" @click="close">&times;</button>
+      <button class="close-button" @click="close">&times;</button>
 
       <div class="dashboard-header">
         <h2 class="dashboard-title">My Dashboard</h2>
@@ -317,7 +317,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .dashboard {
   position: fixed;
   inset: 0 0 0 0;
@@ -340,18 +340,11 @@ export default {
   z-index: 90;
 }
 
-.close-dashboard {
+.close-button {
   position: absolute;
   top: 1.6rem;
   right: 1.6rem;
-
-  background: none;
-  border: none;
-  cursor: pointer;
   z-index: 103;
-
-  font-size: 2.4rem;
-  color: var(--text-primary);
 }
 
 .dashboard-content {
