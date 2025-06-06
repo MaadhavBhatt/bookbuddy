@@ -55,7 +55,7 @@
               type="button"
               class="google-button"
               @click="signInWithGoogle"
-              :disabled="isLoading"
+              disabled
             >
               Sign in with Google
             </button>
@@ -207,17 +207,16 @@ export default {
 }
 
 .modal-header {
-  padding: 2rem;
+  padding: 1rem 2rem;
   border-bottom: 1px solid #444;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
 
-.modal-header h2 {
-  margin: 0;
-  font-size: 2.5rem;
-  color: var(--text-primary);
+  & h2 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+  }
 }
 
 .close-button {
@@ -226,9 +225,11 @@ export default {
   font-size: 2.4rem;
   color: var(--text-secondary);
   cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    color: var(--text-primary);
+    color: var(--clr-yellow-2);
+    transform: scale(1.1);
   }
 }
 
@@ -237,8 +238,9 @@ export default {
 }
 
 .error-message {
-  background-color: rgba(231, 76, 60, 0.2);
-  color: #e74c3c;
+  background-color: var(--bg-secondary);
+  color: var(--clr-yellow-2);
+  outline: 1px solid var(--clr-yellow-2);
   padding: 1rem;
   border-radius: 0.4rem;
   margin-bottom: 2rem;
@@ -306,7 +308,7 @@ button:disabled {
   color: var(--text-secondary);
 
   & a {
-    color: #3498db;
+    color: var(--clr-yellow-3);
     text-decoration: none;
 
     &:hover {
