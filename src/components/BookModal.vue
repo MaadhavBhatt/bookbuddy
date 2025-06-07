@@ -26,7 +26,7 @@
           </div>
         </div>
 
-        <div class="book-header-info flex-col gap-1">
+        <div class="flex-col gap-1">
           <h1 class="book-title">{{ bookData.title }}</h1>
           <h2 class="book-author">By {{ bookData.author }}</h2>
 
@@ -326,63 +326,64 @@ export default {
 .book-meta {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 1rem;
-}
 
-.book-status {
-  display: inline-block;
-  padding: 0.4rem 0.8rem;
-  border-radius: 0.4rem;
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--bg-secondary);
-}
+  & .book-status,
+  & .book-copies {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    font-size: 1.2rem;
+  }
 
-.book-copies {
-  display: inline-block;
-  padding: 0.4rem 0.8rem;
-  border-radius: 0.4rem;
-  font-size: 1.2rem;
-  background-color: var(--bg-primary);
-  color: var(--text-secondary);
+  & .book-status {
+    font-weight: 500;
+    color: var(--bg-secondary);
+  }
+
+  & .book-copies {
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+  }
 }
 
 .book-actions {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-}
 
-.action-button {
-  padding: 0.8rem 1.6rem;
-  border-radius: 0.4rem;
-  font-weight: 500;
-  font-size: 1.3rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.request-button {
-  background-color: var(--clr-yellow-1);
-  border: none;
-  color: var(--bg-primary);
-
-  &:hover {
-    background-color: var(--clr-yellow-2);
+  & .action-button {
+    padding: 0.8rem 1.6rem;
+    border-radius: 0.4rem;
+    font-weight: 500;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
-}
 
-.save-button {
-  background-color: transparent;
-  border: 1px solid var(--text-secondary);
-  color: var(--text-secondary);
+  & .request-button {
+    background-color: var(--clr-yellow-1);
+    border: none;
+    color: var(--bg-primary);
 
-  &:hover {
-    border-color: var(--text-primary);
-    color: var(--text-primary);
+    &:hover {
+      background-color: var(--clr-yellow-2);
+    }
+  }
+
+  & .save-button {
+    background-color: transparent;
+    border: 1px solid var(--text-secondary);
+    color: var(--text-secondary);
+
+    &:hover {
+      border-color: var(--text-primary);
+      color: var(--text-primary);
+    }
   }
 }
 
@@ -407,20 +408,20 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 1rem;
-}
 
-.detail-item {
-  font-size: 1.2rem;
-}
+  & * {
+    font-size: var(--fz-sm);
+  }
 
-.detail-label {
-  display: block;
-  color: var(--text-secondary);
-}
+  & .detail-label {
+    display: block;
+    color: var(--text-secondary);
+  }
 
-.detail-value {
-  color: var(--text-primary);
-  font-weight: 500;
+  & .detail-value {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
 }
 
 .donor {

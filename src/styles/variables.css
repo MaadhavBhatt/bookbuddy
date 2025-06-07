@@ -30,7 +30,7 @@ Color Scheme:
   --fz-xl: clamp(3rem, 5vw, 5rem);
   --fz-lg: clamp(2rem, 4vw, 3rem);
   --fz-md: clamp(1.5rem, 3vw, 2rem);
-  --fz-sm: clamp(1rem, 2vw, 1.5rem);
-  --fz-xs: clamp(0.8rem, 1.5vw, 1.2rem);
-  --fz-xxs: clamp(0.6rem, 1vw, 1rem);
+  --fz-sm: clamp(1.2rem, 2vw, 1.5rem);
+  --fz-xs: clamp(1rem, 1.5vw, 1.2rem);
+  --fz-xxs: clamp(0.8rem, 1vw, 1rem);
 }
