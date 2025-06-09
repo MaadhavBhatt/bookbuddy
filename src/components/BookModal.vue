@@ -48,9 +48,6 @@
             >
               Request Book
             </button>
-            <button class="action-button save-button">
-              <span class="icon">♡</span> Save
-            </button>
           </div>
         </div>
       </div>
@@ -372,17 +369,6 @@ export default {
 
     &:hover {
       background-color: var(--clr-yellow-2);
-    }
-  }
-
-  & .save-button {
-    background-color: transparent;
-    border: 1px solid var(--text-secondary);
-    color: var(--text-secondary);
-
-    &:hover {
-      border-color: var(--text-primary);
-      color: var(--text-primary);
     }
   }
 }
