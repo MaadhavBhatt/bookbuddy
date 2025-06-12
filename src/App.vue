@@ -40,10 +40,10 @@
         <span class="user-name" v-if="currentUser">{{
           getUserDisplayName
         }}</span>
-        <button class="header-button" v-if="currentUser" @click="openDashboard">
+        <button class="btn btn-empty" v-if="currentUser" @click="openDashboard">
           Dashboard
         </button>
-        <button class="header-button" v-if="currentUser" @click="logout">
+        <button class="btn btn-empty" v-if="currentUser" @click="logout">
           Logout
         </button>
         <button v-else class="login-button" @click="showLoginModal = true">
@@ -58,7 +58,7 @@
       <section class="search" :class="{ 'search-focused': searchFocused }">
         <div class="container search-container">
           <input
-            type="text"
+            type="search"
             placeholder="Search books (Ctrl+P) ..."
             class="search-input"
             @focus="searchFocused = true"
@@ -66,7 +66,9 @@
             v-model="searchQuery"
             ref="searchInput"
           />
-          <button class="cta-button donate" @click="openDonateModal">+</button>
+          <button class="btn btn-fill btn-round" @click="openDonateModal">
+            +
+          </button>
         </div>
       </section>
 
@@ -556,6 +558,45 @@ option {
   color: var(--clr-yellow-1);
 }
 
+.btn {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.4rem;
+
+  &.btn-empty {
+    background: transparent;
+    outline: 0.1rem solid var(--clr-yellow-1);
+    color: var(--clr-yellow-1);
+    transition: background-color 0.2s ease, color 0.2s;
+
+    &:hover {
+      background-color: var(--clr-yellow-1);
+      color: var(--bg-secondary);
+    }
+  }
+
+  &.btn-fill {
+    background-color: var(--clr-yellow-1);
+    color: var(--bg-secondary);
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--clr-yellow-2);
+    }
+  }
+
+  &.btn-round {
+    border-radius: 50%;
+    aspect-ratio: 1;
+
+    /* Move this to a specific class */
+    padding: 0 2rem;
+    font-size: 2rem;
+    font-weight: 400;
+  }
+}
+
 /* Header */
 .header {
   display: flex;
@@ -617,22 +658,6 @@ option {
   font-weight: 500;
 }
 
-.header-button {
-  background-color: transparent;
-  border: 0.1rem solid var(--clr-yellow-1);
-  color: var(--clr-yellow-1);
-  padding: 0.5rem 1rem;
-  margin-right: 1rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s;
-
-  &:hover {
-    background-color: var(--clr-yellow-1);
-    color: var(--bg-secondary);
-  }
-}
-
 /* Main content */
 main {
   flex: 1;
@@ -692,24 +717,6 @@ section {
 
   border: 1px solid var(--border-color);
   border-radius: 2rem;
-}
-
-.cta-button {
-  cursor: pointer;
-
-  font-size: 2rem;
-  font-weight: 400;
-
-  padding: 0 2rem;
-
-  border: none;
-  border-radius: 50%;
-  aspect-ratio: 1;
-
-  &.donate {
-    background-color: var(--clr-yellow-1);
-    color: var(--bg-secondary);
-  }
 }
 
 /* Search Results */
@@ -962,10 +969,6 @@ section {
 
 /* Media queries */
 @media (min-width: 375px) {
-  .cta-buttons {
-    flex-direction: row;
-  }
-
   .results-grid {
     grid-template-columns: repeat(2, 1fr);
   }
